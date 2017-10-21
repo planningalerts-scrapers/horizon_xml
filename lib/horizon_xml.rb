@@ -74,12 +74,16 @@ class Horizon_xml
   end
 
   def checkParams
+    unless @period
+      setPeriod('default')
+    end
+
     raise "Info's URL is not set." unless @info_url
     raise "Comment's URL is not set." unless @comment_url
     raise "Host's URL is not set." unless @host_url
-    raise "Period is not set." unless @period
     raise "XML's URL is not set." unless @xml_url
     raise "Domain is not set." unless @domain
+
     true
   end
 
