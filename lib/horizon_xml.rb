@@ -26,6 +26,7 @@ class Horizon_xml
   attr_accessor :comment_url
   attr_accessor :xml_url
   attr_accessor :domain
+  attr_accessor :host_url
 
   def setPeriod(period = nil)
     case period
