@@ -17,7 +17,8 @@ class Horizon_xml
     @xml_url      = nil
     @domain       = nil
     @host_url     = 'http://myhorizon.solorient.com.au/Horizon/logonGuest.aw'
-    @pagesize     = 1000
+    @pagesize     = 500
+    @start        = 0
     @agent        = Mechanize.new
   end
 
@@ -34,24 +35,19 @@ class Horizon_xml
     case period
       when 'lastmonth'
         @period = "lastmonth"
-        @xml_url = 'http://myhorizon.solorient.com.au/Horizon/urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+MONTH(Applications.Lodged-1)%3DSystemSettings.SearchMonthPrevious+AND+YEAR(Applications.Lodged)%3DSystemSettings.SearchYear+AND+Applications.CanDisclose%3D%27Yes%27+ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC&query_name=SubmittedLastMonth&take=50&skip=0&start=0&pageSize=' + @pagesize.to_s
+        @xml_url = 'http://myhorizon.solorient.com.au/Horizon/urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+MONTH(Applications.Lodged-1)%3DSystemSettings.SearchMonthPrevious+AND+YEAR(Applications.Lodged)%3DSystemSettings.SearchYear+AND+Applications.CanDisclose%3D%27Yes%27+ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC&query_name=SubmittedLastMonth&take=50&skip=0&start=' +@start.to_s+ '&pageSize=' + @pagesize.to_s
       when 'thismonth'
         @period = "thismonth"
-        @xml_url = 'http://myhorizon.solorient.com.au/Horizon/urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+MONTH(Applications.Lodged)%3DCURRENT_MONTH+AND+YEAR(Applications.Lodged)%3DCURRENT_YEAR+ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC&query_name=SubmittedThisMonth&take=50&skip=0&start=0&pageSize=' + @pagesize.to_s
+        @xml_url = 'http://myhorizon.solorient.com.au/Horizon/urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+MONTH(Applications.Lodged)%3DCURRENT_MONTH+AND+YEAR(Applications.Lodged)%3DCURRENT_YEAR+ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC&query_name=SubmittedThisMonth&take=50&skip=0&start=' +@start.to_s+ '&pageSize=' + @pagesize.to_s
       else
         if (period.to_i >= 1960)
           @period = period.to_i.to_s
-          @xml_url = ('http://myhorizon.solorient.com.au/Horizon/urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+Applications.AppYear%3D1960+AND+Applications.CanDisclose%3D%27Yes%27+ORDER+BY+Applications.Lodged+DESC%2CApplications.AppYear+DESC%2CApplications.AppNumber+DESC&query_name=Applications_List_Search&take=50&skip=0&start=0&pageSize=' + @pagesize.to_s).gsub('1960', period.to_i.to_s)
+          @xml_url = ('http://myhorizon.solorient.com.au/Horizon/urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+Applications.AppYear%3D1960+AND+Applications.CanDisclose%3D%27Yes%27+ORDER+BY+Applications.Lodged+DESC%2CApplications.AppYear+DESC%2CApplications.AppNumber+DESC&query_name=Applications_List_Search&take=50&skip=0&start=' +@start.to_s+ '&pageSize=' + @pagesize.to_s).gsub('1960', period.to_i.to_s)
         else
           @period = "thisweek"
-          @xml_url = 'http://myhorizon.solorient.com.au/Horizon/urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+WEEK(Applications.Lodged)%3DCURRENT_WEEK-1+AND+YEAR(Applications.Lodged)%3DCURRENT_YEAR+AND+Applications.CanDisclose%3D%27Yes%27+ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC&query_name=SubmittedThisWeek&take=50&skip=0&start=0&pageSize=' + @pagesize.to_s
+          @xml_url = 'http://myhorizon.solorient.com.au/Horizon/urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+WEEK(Applications.Lodged)%3DCURRENT_WEEK-1+AND+YEAR(Applications.Lodged)%3DCURRENT_YEAR+AND+Applications.CanDisclose%3D%27Yes%27+ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC&query_name=SubmittedThisWeek&take=50&skip=0&start=' +@start.to_s+ '&pageSize=' + @pagesize.to_s
         end
     end
-
-    if @debug
-      puts "Scraping for " + @period
-    end
-
     self
   end
 
@@ -94,37 +90,54 @@ class Horizon_xml
     if checkParams
       @records = Array.new
 
+      if @debug
+        puts "Scraping for " + @period
+      end
+
       page = @agent.get(@host_url)
       page = @agent.get(@xml_url)
 
       xml = Nokogiri::XML(page.body)
 
-      xml.xpath('//run_query_action_return/run_query_action_success/dataset/row').each do |app|
-        record = {
-            'council_reference' => app.xpath('AccountNumber').attribute('org_value').text.length > 0 ? app.xpath('AccountNumber').attribute('org_value').text.strip : nil,
-            'address'           => app.xpath('Property').attribute('org_value').text.length > 0 ? (app.xpath('Property').attribute('org_value').text + ' NSW').strip : nil,
-            'description'       => app.xpath('Description').attribute('org_value').text.length > 0 ? app.xpath('Description').attribute('org_value').text.strip : nil,
-            'info_url'          => @info_url,
-            'comment_url'       => @comment_url,
-            'date_scraped'      => Date.today.to_s,
-            'date_received'     => DateTime.parse(app.xpath('Lodged').attribute('org_value').text).to_date.to_s
-        }
+      total = xml.xpath('//run_query_action_return/run_query_action_success/dataset/total').text.to_i
+      pages = total / @pagesize
 
+      for i in 0..pages do
         if @debug
-          p record
+          puts 'checking page ' + (i+1).to_s + ' of ' + (pages+1).to_s
         end
 
-        # adding record to records array
-        if @allow_blanks
-          @records << record
-        else
-          unless record.has_blank?
-            @records << record
+        @start = i * @pagesize
+        setPeriod(@period)
+        page = @agent.get(@xml_url)
+        xml  = Nokogiri::XML(page.body)
+
+        xml.xpath('//run_query_action_return/run_query_action_success/dataset/row').each do |app|
+          record = {
+              'council_reference' => app.xpath('AccountNumber').attribute('org_value').text.length > 0 ? app.xpath('AccountNumber').attribute('org_value').text.strip : nil,
+              'address'           => app.xpath('Property').attribute('org_value').text.length > 0 ? (app.xpath('Property').attribute('org_value').text + ' NSW').strip : nil,
+              'description'       => app.xpath('Description').attribute('org_value').text.length > 0 ? app.xpath('Description').attribute('org_value').text.strip : nil,
+              'info_url'          => @info_url,
+              'comment_url'       => @comment_url,
+              'date_scraped'      => Date.today.to_s,
+              'date_received'     => DateTime.parse(app.xpath('Lodged').attribute('org_value').text).to_date.to_s
+          }
+
+          if @debug
+            p record
           end
-        end
 
-      end
-    end
+          # adding record to records array
+          if @allow_blanks
+            @records << record
+          else
+            unless record.has_blank?
+              @records << record
+            end
+          end
+        end # do
+      end # for
+    end # if
     self
   end
 

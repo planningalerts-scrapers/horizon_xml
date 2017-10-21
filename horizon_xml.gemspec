@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'horizon_xml'
-  s.version     = '1.0.3'
-  s.date        = '2017-10-21'
+  s.version     = '1.0.4'
+  s.date        = '2017-10-22'
   s.summary     = "Reformat SolOrient's Horizon XML feed"
   s.description = "My first gem that read SolOrient Horizon's published XML feed and convert it to a fixed set of records that could be consumed by other API like Planning Alerts's scraper."
   s.authors     = ["Eric Tam"]
