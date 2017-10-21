@@ -107,10 +107,12 @@ class Horizon_xml
           puts 'checking page ' + (i+1).to_s + ' of ' + (pages+1).to_s
         end
 
-        @start = i * @pagesize
-        setPeriod(@period)
-        page = @agent.get(@xml_url)
-        xml  = Nokogiri::XML(page.body)
+        if i > 0
+          @start = i * @pagesize
+          setPeriod(@period)
+          page = @agent.get(@xml_url)
+          xml  = Nokogiri::XML(page.body)
+        end
 
         xml.xpath('//run_query_action_return/run_query_action_success/dataset/row').each do |app|
           record = {
