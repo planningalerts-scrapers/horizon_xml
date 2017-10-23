@@ -7,7 +7,7 @@ class Hash
 end
 
 class Horizon_xml
-  def initialize(debug = false)
+  public def initialize(debug = false)
     @debug        = debug
     @executed     = false
     @allow_blanks = false
@@ -16,85 +16,76 @@ class Horizon_xml
     @comment_url  = nil
     @xml_url      = nil
     @domain       = nil
-    @host_url     = 'http://myhorizon.solorient.com.au/Horizon/logonGuest.aw'
+    @cookie_url   = nil
+    @base_url     = ''       # 'http://myhorizon.solorient.com.au/Horizon/' if it is cloud service
     @pagesize     = 500
     @start        = 0
-    @agent        = Mechanize.new
+    @agent        = nil
   end
 
   attr_accessor :allow_blanks
   attr_accessor :period
   attr_accessor :info_url
   attr_accessor :comment_url
-  attr_accessor :xml_url
   attr_accessor :domain
-  attr_accessor :host_url
+  attr_accessor :base_url
   attr_accessor :pagesize
+  attr_accessor :agent
 
-  def setPeriod(period = nil)
+  private def _setPeriod(period = nil)
     case period
       when 'lastmonth'
         @period = "lastmonth"
-        @xml_url = 'http://myhorizon.solorient.com.au/Horizon/urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+MONTH(Applications.Lodged-1)%3DSystemSettings.SearchMonthPrevious+AND+YEAR(Applications.Lodged)%3DSystemSettings.SearchYear+AND+Applications.CanDisclose%3D%27Yes%27+ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC&query_name=SubmittedLastMonth&take=50&skip=0&start=' +@start.to_s+ '&pageSize=' + @pagesize.to_s
+        @xml_url = @base_url + 'urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+MONTH(Applications.Lodged-1)%3DSystemSettings.SearchMonthPrevious+AND+YEAR(Applications.Lodged)%3DSystemSettings.SearchYear+AND+Applications.CanDisclose%3D%27Yes%27+ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC&query_name=SubmittedLastMonth&take=50&skip=0&start=' +@start.to_s+ '&pageSize=' + @pagesize.to_s
       when 'thismonth'
         @period = "thismonth"
-        @xml_url = 'http://myhorizon.solorient.com.au/Horizon/urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+MONTH(Applications.Lodged)%3DCURRENT_MONTH+AND+YEAR(Applications.Lodged)%3DCURRENT_YEAR+ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC&query_name=SubmittedThisMonth&take=50&skip=0&start=' +@start.to_s+ '&pageSize=' + @pagesize.to_s
+        @xml_url = @base_url + 'urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+MONTH(Applications.Lodged)%3DCURRENT_MONTH+AND+YEAR(Applications.Lodged)%3DCURRENT_YEAR+ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC&query_name=SubmittedThisMonth&take=50&skip=0&start=' +@start.to_s+ '&pageSize=' + @pagesize.to_s
       else
         if (period.to_i >= 1960)
           @period = period.to_i.to_s
-          @xml_url = ('http://myhorizon.solorient.com.au/Horizon/urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+Applications.AppYear%3D1960+AND+Applications.CanDisclose%3D%27Yes%27+ORDER+BY+Applications.Lodged+DESC%2CApplications.AppYear+DESC%2CApplications.AppNumber+DESC&query_name=Applications_List_Search&take=50&skip=0&start=' +@start.to_s+ '&pageSize=' + @pagesize.to_s).gsub('1960', period.to_i.to_s)
+          @xml_url = (@base_url + 'urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+Applications.AppYear%3D1960+AND+Applications.CanDisclose%3D%27Yes%27+ORDER+BY+Applications.Lodged+DESC%2CApplications.AppYear+DESC%2CApplications.AppNumber+DESC&query_name=Applications_List_Search&take=50&skip=0&start=' +@start.to_s+ '&pageSize=' + @pagesize.to_s).gsub('1960', @period)
         else
           @period = "thisweek"
-          @xml_url = 'http://myhorizon.solorient.com.au/Horizon/urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+WEEK(Applications.Lodged)%3DCURRENT_WEEK-1+AND+YEAR(Applications.Lodged)%3DCURRENT_YEAR+AND+Applications.CanDisclose%3D%27Yes%27+ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC&query_name=SubmittedThisWeek&take=50&skip=0&start=' +@start.to_s+ '&pageSize=' + @pagesize.to_s
+          @xml_url = @base_url + 'urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+WEEK(Applications.Lodged)%3DCURRENT_WEEK-1+AND+YEAR(Applications.Lodged)%3DCURRENT_YEAR+AND+Applications.CanDisclose%3D%27Yes%27+ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC&query_name=SubmittedThisWeek&take=50&skip=0&start=' +@start.to_s+ '&pageSize=' + @pagesize.to_s
         end
     end
     self
   end
 
-  def setCommentUrl(url = nil)
-    @comment_url = url
-    self
-  end
-
-  def setInfoUrl(url = nil)
-    @info_url = url
-    self
-  end
-
-  def setDomain(domain = nil)
-    @domain = domain
-    @host_url = @host_url + '?domain=' + @domain
-    self
-  end
-
-  def setAgent(agent = Mechanize.new)
-    @agent = agent
-    self
-  end
-
-  def checkParams
-    unless @period
-      setPeriod('default')
+  private def _checkParams
+    unless @agent
+      @agent = Mechanize.new
     end
 
-    raise "Info's URL is not set." unless @info_url
-    raise "Comment's URL is not set." unless @comment_url
-    raise "Host's URL is not set." unless @host_url
-    raise "XML's URL is not set." unless @xml_url
+    _setPeriod(@period)
+    @cookie_url = @base_url + 'logonGuest.aw?domain=' + @domain
+
+    unless @info_url
+      @info_url = @cookie_url
+    end
+
+    unless @comment_url
+      @comment_url = @cookie_url
+    end
+
+    raise "Base's URL is not set." unless @base_url
     raise "Domain is not set." unless @domain
 
     true
   end
 
-  def execute
-    if checkParams
+  private def _execute
+    if _checkParams
       @records = Array.new
 
       if @debug
         puts "Scraping for " + @period
+        puts "Base URL  : " + @base_url
+        puts "Cookie URL: " + @cookie_url
+        puts "XML URL   : " + @xml_url
       end
 
-      page = @agent.get(@host_url)
+      page = @agent.get(@cookie_url)
       page = @agent.get(@xml_url)
 
       xml = Nokogiri::XML(page.body)
@@ -145,7 +136,7 @@ class Horizon_xml
 
   def getRecords
     unless @executed
-      execute
+      _execute
     end
     @records
   end
