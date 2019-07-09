@@ -21,7 +21,6 @@ module HorizonXml
       scrape_and_save_maitland
     else
       base_url = "http://myhorizon.solorient.com.au/Horizon/"
-      period = "thismonth"
 
       if authority == :cowra
         domain = "horizondap_cowra"
@@ -37,7 +36,7 @@ module HorizonXml
         raise "Unexpected authority: #{authority}"
       end
 
-      HorizonXml.scrape_url(base_url, domain, period) do |record|
+      HorizonXml.scrape_url(base_url, domain) do |record|
         save(record)
       end
     end
@@ -70,34 +69,6 @@ module HorizonXml
     "Applications.Lodged DESC"
   end
 
-  def self.lastmonth_query
-    "FIND Applications " \
-    "WHERE+MONTH(Applications.Lodged-1)=SystemSettings.SearchMonthPrevious AND " \
-    "YEAR(Applications.Lodged)=SystemSettings.SearchYear AND " \
-    "Applications.CanDisclose='Yes' " \
-    "ORDER BY Applications.AppYear DESC,Applications.AppNumber DESC"
-  end
-
-  def self.year_query(period)
-    "FIND Applications " \
-    "WHERE " \
-    "Applications.AppYear=#{period} AND " \
-    "Applications.CanDisclose='Yes' " \
-    "ORDER BY " \
-    "Applications.Lodged DESC," \
-    "Applications.AppYear DESC," \
-    "Applications.AppNumber DESC"
-  end
-
-  def self.thisweek_query
-    "FIND Applications " \
-    "WHERE " \
-    "WEEK(Applications.Lodged)=CURRENT_WEEK-1 AND " \
-    "YEAR(Applications.Lodged)=CURRENT_YEAR AND " \
-    "Applications.CanDisclose='Yes' " \
-    "ORDER BY Applications.AppYear DESC,Applications.AppNumber DESC"
-  end
-
   def self.query_url(base_url:, query_string:, query_name:, take:, start:, page_size:)
     "#{base_url}urlRequest.aw?" + {
       "actionType" => "run_query_action",
@@ -108,17 +79,6 @@ module HorizonXml
       "start" => start,
       "pageSize" => page_size
     }.to_query
-  end
-
-  def self.lastmonth_url(base_url, start, page_size)
-    query_url(
-      base_url: base_url,
-      query_string: lastmonth_query,
-      query_name: "SubmittedLastMonth",
-      take: 50,
-      start: start,
-      page_size: page_size
-    )
   end
 
   def self.thismonth_url(base_url, start, page_size)
@@ -143,41 +103,8 @@ module HorizonXml
     )
   end
 
-  def self.year_url(base_url, period, start, page_size)
-    query_url(
-      base_url: base_url,
-      query_string: year_query(period),
-      query_name: "Applications_List_Search",
-      take: 50,
-      start: start,
-      page_size: page_size
-    )
-  end
-
-  def self.thisweek_url(base_url, start, page_size)
-    query_url(
-      base_url: base_url,
-      query_string: thisweek_query,
-      query_name: "SubmittedThisWeek",
-      take: 50,
-      start: start,
-      page_size: page_size
-    )
-  end
-
-  def self.url(period, base_url, start, page_size)
-    case period
-    when "lastmonth"
-      HorizonXml.lastmonth_url(base_url, start, page_size)
-    when "thismonth"
-      HorizonXml.thismonth_url(base_url, start, page_size)
-    else
-      if period.to_i >= 1960
-        HorizonXml.year_url(base_url, period, start, page_size)
-      else
-        HorizonXml.thisweek_url(base_url, start, page_size)
-      end
-    end
+  def self.url(base_url, start, page_size)
+    HorizonXml.thismonth_url(base_url, start, page_size)
   end
 
   def self.extract_total(page)
@@ -212,19 +139,19 @@ module HorizonXml
     end
   end
 
-  def self.scrape_url(base_url, domain, period)
+  def self.scrape_url(base_url, domain)
     page_size = 500
     cookie_url = "#{base_url}logonGuest.aw?domain=#{domain}"
 
     agent = Mechanize.new
 
     agent.get(cookie_url)
-    page = agent.get(HorizonXml.url(period, base_url, 0, page_size))
+    page = agent.get(HorizonXml.url(base_url, 0, page_size))
 
     pages = extract_total(page) / page_size
 
     (0..pages).each do |i|
-      page = agent.get(HorizonXml.url(period, base_url, i * page_size, page_size)) if i.positive?
+      page = agent.get(HorizonXml.url(base_url, i * page_size, page_size)) if i.positive?
 
       scrape_page(page, cookie_url) do |record|
         yield record
