@@ -3,14 +3,14 @@
 require "timecop"
 require "spec_helper"
 
-RSpec.describe Horizon_xml do
+RSpec.describe HorizonXml do
   describe ".scrape_and_save" do
     def test_scrape_and_save(authority)
       File.delete("./data.sqlite") if File.exist?("./data.sqlite")
 
       VCR.use_cassette(authority) do
         Timecop.freeze(Date.new(2019, 5, 15)) do
-          Horizon_xml.scrape_and_save(authority)
+          HorizonXml.scrape_and_save(authority)
         end
       end
 
@@ -34,7 +34,7 @@ RSpec.describe Horizon_xml do
       expect(results).to eq expected
     end
 
-    Horizon_xml::AUTHORITIES.keys.each do |authority|
+    HorizonXml::AUTHORITIES.keys.each do |authority|
       it authority do
         test_scrape_and_save(authority)
       end
