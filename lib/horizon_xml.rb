@@ -47,24 +47,6 @@ module HorizonXml
     ScraperWiki.save_sqlite(["council_reference"], record)
   end
 
-  def self.lastmonth_url(base_url, start, page_size)
-    query_string = "FIND Applications " \
-                   "WHERE+MONTH(Applications.Lodged-1)=SystemSettings.SearchMonthPrevious AND " \
-                   "YEAR(Applications.Lodged)=SystemSettings.SearchYear AND " \
-                   "Applications.CanDisclose='Yes' " \
-                   "ORDER BY Applications.AppYear DESC,Applications.AppNumber DESC"
-    query_string = encode_query_string(query_string)
-
-    "#{base_url}urlRequest.aw?" \
-      "actionType=run_query_action&" \
-      "query_string=#{query_string}&" \
-      "query_name=SubmittedLastMonth&" \
-      "take=50&" \
-      "skip=0&" \
-      "start=#{start}&" \
-      "pageSize=#{page_size}"
-  end
-
   def self.thismonth_query
     "FIND Applications " \
       "WHERE " \
@@ -87,11 +69,40 @@ module HorizonXml
       "Applications.Lodged DESC"
   end
 
-  def self.thismonth_url(base_url, start, page_size)
-    query_string = encode_query_string(thismonth_query)
+  def self.lastmonth_query
+    "FIND Applications " \
+      "WHERE+MONTH(Applications.Lodged-1)=SystemSettings.SearchMonthPrevious AND " \
+      "YEAR(Applications.Lodged)=SystemSettings.SearchYear AND " \
+      "Applications.CanDisclose='Yes' " \
+      "ORDER BY Applications.AppYear DESC,Applications.AppNumber DESC"
+  end
+
+  def self.year_query(period)
+    "FIND Applications " \
+      "WHERE " \
+      "Applications.AppYear=#{period} AND " \
+      "Applications.CanDisclose='Yes' " \
+      "ORDER BY " \
+      "Applications.Lodged DESC," \
+      "Applications.AppYear DESC," \
+      "Applications.AppNumber DESC"
+  end
+
+  def self.lastmonth_url(base_url, start, page_size)
     "#{base_url}urlRequest.aw?" \
       "actionType=run_query_action&" \
-      "query_string=#{query_string}&" \
+      "query_string=#{encode_query_string(lastmonth_query)}&" \
+      "query_name=SubmittedLastMonth&" \
+      "take=50&" \
+      "skip=0&" \
+      "start=#{start}&" \
+      "pageSize=#{page_size}"
+  end
+
+  def self.thismonth_url(base_url, start, page_size)
+    "#{base_url}urlRequest.aw?" \
+      "actionType=run_query_action&" \
+      "query_string=#{encode_query_string(thismonth_query)}&" \
       "query_name=SubmittedThisMonth&" \
       "take=50&" \
       "skip=0&" \
@@ -100,19 +111,9 @@ module HorizonXml
   end
 
   def self.year_url(base_url, period, start, page_size)
-    query_string = "FIND Applications " \
-                   "WHERE " \
-                   "Applications.AppYear=#{period} AND " \
-                   "Applications.CanDisclose='Yes' " \
-                   "ORDER BY " \
-                   "Applications.Lodged DESC," \
-                   "Applications.AppYear DESC," \
-                   "Applications.AppNumber DESC"
-    query_string = encode_query_string(query_string)
-
     "#{base_url}urlRequest.aw?" \
       "actionType=run_query_action&" \
-      "query_string=#{query_string}&" \
+      "query_string=#{encode_query_string(year_query(period))}&" \
       "query_name=Applications_List_Search&" \
       "take=50&" \
       "skip=0&" \
