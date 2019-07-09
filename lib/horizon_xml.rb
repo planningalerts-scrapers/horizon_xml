@@ -20,13 +20,13 @@ class HorizonXml
 
     if authority == :cowra
       collector.domain      = "horizondap_cowra"
-      collector.period      = ENV["MORPH_PERIOD"]
+      collector.period      = "thismonth"
     elsif authority == :liverpool_plains
       collector.domain      = "horizondap_lpsc"
-      collector.period      = ENV["MORPH_PERIOD"]
+      collector.period      = "thismonth"
     elsif authority == :uralla
       collector.domain      = "horizondap_uralla"
-      collector.period      = ENV["MORPH_PERIOD"]
+      collector.period      = "thismonth"
     elsif authority == :walcha
       collector.domain      = "horizondap_walcha"
       collector.period      = "thismonth"
