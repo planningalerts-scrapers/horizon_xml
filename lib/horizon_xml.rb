@@ -1,4 +1,5 @@
 require 'mechanize'
+require 'scraperwiki'
 
 class Hash
   def has_blank?
@@ -7,6 +8,28 @@ class Hash
 end
 
 class Horizon_xml
+  AUTHORITIES = {
+    cowra: {}
+  }
+
+  def self.scrape_and_save(authority)
+    if authority == :cowra
+      collector = Horizon_xml.new
+      collector.base_url    = 'http://myhorizon.solorient.com.au/Horizon/'
+      collector.domain      = 'horizondap_cowra'
+      collector.comment_url = 'mailto:council@cowra.nsw.gov.au'
+      collector.period      = ENV['MORPH_PERIOD']
+
+      collector.getRecords.each do |record|
+      #   p record
+        puts "Saving record " + record['council_reference'] + ", " + record['address']
+        ScraperWiki.save_sqlite(['council_reference'], record)
+      end
+    else
+      raise "Unexpected authority: #{authority}"
+    end
+  end
+
   public def initialize(debug = false)
     @debug        = debug
     @executed     = false
