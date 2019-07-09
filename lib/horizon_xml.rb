@@ -16,24 +16,24 @@ class HorizonXml
 
   def self.scrape_and_save(authority)
     collector = HorizonXml.new
-    collector.base_url = "http://myhorizon.solorient.com.au/Horizon/"
+    base_url = "http://myhorizon.solorient.com.au/Horizon/"
+    period = "thismonth"
 
     if authority == :cowra
-      collector.domain = "horizondap_cowra"
+      domain = "horizondap_cowra"
     elsif authority == :liverpool_plains
-      collector.domain = "horizondap_lpsc"
+      domain = "horizondap_lpsc"
     elsif authority == :uralla
-      collector.domain = "horizondap_uralla"
+      domain = "horizondap_uralla"
     elsif authority == :walcha
-      collector.domain = "horizondap_walcha"
+      domain = "horizondap_walcha"
     elsif authority == :weddin
-      collector.domain = "horizondap"
+      domain = "horizondap"
     else
       raise "Unexpected authority: #{authority}"
     end
 
-    collector.period = "thismonth"
-    collector.records.each do |record|
+    collector.records(base_url, domain, period).each do |record|
       save(record)
     end
   end
@@ -122,22 +122,15 @@ class HorizonXml
     end
   end
 
-  attr_accessor :period
-  attr_accessor :domain
-  attr_accessor :base_url
-
-  def records
-    raise "Base's URL is not set." unless @base_url
-    raise "Domain is not set." unless @domain
-
+  def records(base_url, domain, period)
     page_size = 500
     start = 0
 
     agent = Mechanize.new
 
-    xml_url = HorizonXml.url(@period, @base_url, start, page_size)
+    xml_url = HorizonXml.url(period, base_url, start, page_size)
 
-    cookie_url = @base_url + "logonGuest.aw?domain=" + @domain
+    cookie_url = base_url + "logonGuest.aw?domain=" + domain
 
     info_url ||= cookie_url
 
@@ -156,7 +149,7 @@ class HorizonXml
     (0..pages).each do |i|
       if i.positive?
         start = i * page_size
-        xml_url = HorizonXml.url(@period, @base_url, start, page_size)
+        xml_url = HorizonXml.url(period, base_url, start, page_size)
         page = agent.get(xml_url)
         xml  = Nokogiri::XML(page.body)
       end
