@@ -48,11 +48,16 @@ module HorizonXml
   end
 
   def self.lastmonth_url(base_url, start, page_size)
-    query_string = "FIND+Applications+" \
-                   "WHERE+MONTH(Applications.Lodged-1)%3DSystemSettings.SearchMonthPrevious+AND+" \
-                   "YEAR(Applications.Lodged)%3DSystemSettings.SearchYear+AND+" \
-                   "Applications.CanDisclose%3D%27Yes%27+" \
-                   "ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC"
+    query_string = "FIND Applications " \
+                   "WHERE+MONTH(Applications.Lodged-1)=SystemSettings.SearchMonthPrevious AND " \
+                   "YEAR(Applications.Lodged)=SystemSettings.SearchYear AND " \
+                   "Applications.CanDisclose='Yes' " \
+                   "ORDER BY Applications.AppYear DESC,Applications.AppNumber DESC"
+    query_string = query_string.gsub(" ", "+")
+                               .gsub("=", "%3D")
+                               .gsub(",", "%2C")
+                               .gsub("'", "%27")
+
     "#{base_url}urlRequest.aw?" \
       "actionType=run_query_action&" \
       "query_string=#{query_string}&" \
@@ -86,7 +91,10 @@ module HorizonXml
   end
 
   def self.thismonth_url(base_url, start, page_size)
-    query_string = thismonth_query.gsub(" ", "+").gsub("=", "%3D").gsub(",", "%2C")
+    query_string = thismonth_query.gsub(" ", "+")
+                                  .gsub("=", "%3D")
+                                  .gsub(",", "%2C")
+                                  .gsub("'", "%27")
     "#{base_url}urlRequest.aw?" \
       "actionType=run_query_action&" \
       "query_string=#{query_string}&" \
@@ -98,14 +106,19 @@ module HorizonXml
   end
 
   def self.year_url(base_url, period, start, page_size)
-    query_string = "FIND+Applications+" \
-                   "WHERE+" \
-                   "Applications.AppYear%3D#{period}+AND+" \
-                   "Applications.CanDisclose%3D%27Yes%27+" \
-                   "ORDER+BY+" \
-                   "Applications.Lodged+DESC%2C" \
-                   "Applications.AppYear+DESC%2C" \
-                   "Applications.AppNumber+DESC"
+    query_string = "FIND Applications " \
+                   "WHERE " \
+                   "Applications.AppYear=#{period} AND " \
+                   "Applications.CanDisclose='Yes' " \
+                   "ORDER BY " \
+                   "Applications.Lodged DESC," \
+                   "Applications.AppYear DESC," \
+                   "Applications.AppNumber DESC"
+    query_string = query_string.gsub(" ", "+")
+                               .gsub("=", "%3D")
+                               .gsub(",", "%2C")
+                               .gsub("'", "%27")
+
     "#{base_url}urlRequest.aw?" \
       "actionType=run_query_action&" \
       "query_string=#{query_string}&" \
@@ -117,12 +130,17 @@ module HorizonXml
   end
 
   def self.thisweek_url(base_url, start, page_size)
-    query_string = "FIND+Applications+" \
-                   "WHERE+" \
-                   "WEEK(Applications.Lodged)%3DCURRENT_WEEK-1+AND+" \
-                   "YEAR(Applications.Lodged)%3DCURRENT_YEAR+AND+" \
-                   "Applications.CanDisclose%3D%27Yes%27+" \
-                   "ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC"
+    query_string = "FIND Applications " \
+                   "WHERE " \
+                   "WEEK(Applications.Lodged)=CURRENT_WEEK-1 AND " \
+                   "YEAR(Applications.Lodged)=CURRENT_YEAR AND " \
+                   "Applications.CanDisclose='Yes' " \
+                   "ORDER BY Applications.AppYear DESC,Applications.AppNumber DESC"
+    query_string = query_string.gsub(" ", "+")
+                               .gsub("=", "%3D")
+                               .gsub(",", "%2C")
+                               .gsub("'", "%27")
+
     "#{base_url}urlRequest.aw?" \
       "actionType=run_query_action&" \
       "query_string=#{query_string}&" \
