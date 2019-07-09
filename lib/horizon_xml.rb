@@ -202,12 +202,15 @@ module HorizonXml
   end
 
   def self.scrape_and_save_maitland
-    base_url = "https://myhorizon.maitland.nsw.gov.au/Horizon/logonOp.aw?e=FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxERQgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home"
+    base_url = "https://myhorizon.maitland.nsw.gov.au/Horizon/"
+    start_url = "#{base_url}logonOp.aw?e=" \
+                "FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxER" \
+                "QgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home"
     query_string = thismonth_query2.gsub(" ", "+")
                                    .gsub("=", "%3D")
                                    .gsub(",", "%2C")
                                    .gsub("'", "%27")
-    data_url = "https://myhorizon.maitland.nsw.gov.au/Horizon/urlRequest.aw?" \
+    data_url = "#{base_url}urlRequest.aw?" \
                "actionType=run_query_action&" \
                "query_string=#{query_string}&" \
                "query_name=Application_LodgedThisMonth&" \
@@ -217,7 +220,7 @@ module HorizonXml
                "pageSize=100"
 
     agent = Mechanize.new
-    agent.get(base_url)
+    agent.get(start_url)
     page = agent.get(data_url)
     records = page.search("//row")
 
