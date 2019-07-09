@@ -160,7 +160,7 @@ class HorizonXml
     (0..pages).each do |i|
       if i.positive?
         @start = i * @pagesize
-        setPeriod(@period)
+        @xml_url = HorizonXml.url(@period, @base_url, @start, @pagesize)
         page = agent.get(@xml_url)
         xml  = Nokogiri::XML(page.body)
       end
