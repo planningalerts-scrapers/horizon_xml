@@ -187,8 +187,6 @@ module HorizonXml
     base_url  = "https://myhorizon.maitland.nsw.gov.au/Horizon/logonOp.aw?e=FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxERQgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home"
     thismonth = "https://myhorizon.maitland.nsw.gov.au/Horizon/urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+Applications.ApplicationTypeID.IsAvailableOnline%3D%27Yes%27+AND+Applications.CanDisclose%3D%27Yes%27+AND+NOT(Applications.StatusName+IN+%27Pending%27%2C+%27Cancelled%27)+AND+MONTH(Applications.Lodged)%3DCURRENT_MONTH+AND+YEAR(Applications.Lodged)%3DCURRENT_YEAR+AND+Application.ApplicationTypeID.Classification%3D%27Application%27+ORDER+BY+Applications.Lodged+DESC&query_name=Application_LodgedThisMonth&take=100&skip=0&start=0&pageSize=100"
 
-    comment_url = "mailto:info@maitland.nsw.gov.au"
-
     data_url = thismonth
 
     agent = Mechanize.new
@@ -202,7 +200,6 @@ module HorizonXml
       record["address"]           = r.at("PropertyDescription")["org_value"].split(",")[0]
       record["description"]       = r.at("Details")["org_value"]
       record["info_url"]          = "https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html"
-      record["comment_url"]       = comment_url
       record["date_scraped"]      = Date.today.to_s
       record["date_received"]     = Date.strptime(r.at("Lodged")["org_value"], "%d/%m/%Y").to_s
 
