@@ -118,26 +118,25 @@ class HorizonXml
       "pageSize=#{page_size}"
   end
 
-  def records
-    @agent ||= Mechanize.new
-
-    period = @period
+  def self.url(period, base_url, start, page_size)
     case period
     when "lastmonth"
-      @period = "lastmonth"
-      @xml_url = HorizonXml.lastmonth_url(@base_url, @start, @pagesize)
+      HorizonXml.lastmonth_url(base_url, start, page_size)
     when "thismonth"
-      @period = "thismonth"
-      @xml_url = HorizonXml.thismonth_url(@base_url, @start, @pagesize)
+      HorizonXml.thismonth_url(base_url, start, page_size)
     else
       if period.to_i >= 1960
-        @period = period.to_i.to_s
-        @xml_url = HorizonXml.year_url(@base_url, period, @start, @pagesize)
+        HorizonXml.year_url(base_url, period, start, page_size)
       else
-        @period = "thisweek"
-        @xml_url = HorizonXml.thisweek_url(@base_url, @start, @pagesize)
+        HorizonXml.thisweek_url(base_url, start, page_size)
       end
     end
+  end
+
+  def records
+    agent = Mechanize.new
+
+    @xml_url = HorizonXml.url(@period, @base_url, @start, @pagesize)
 
     @cookie_url = @base_url + "logonGuest.aw?domain=" + @domain
 
@@ -148,8 +147,8 @@ class HorizonXml
 
     @records = []
 
-    @agent.get(@cookie_url)
-    page = @agent.get(@xml_url)
+    agent.get(@cookie_url)
+    page = agent.get(@xml_url)
 
     xml = Nokogiri::XML(page.body)
 
@@ -162,7 +161,7 @@ class HorizonXml
       if i.positive?
         @start = i * @pagesize
         setPeriod(@period)
-        page = @agent.get(@xml_url)
+        page = agent.get(@xml_url)
         xml  = Nokogiri::XML(page.body)
       end
 
