@@ -13,7 +13,8 @@ class Horizon_xml
     # Can't yet test liverpool_plains because it doesn't return any data for this month
     # liverpool_plains: {}
     uralla: {},
-    walcha: {}
+    walcha: {},
+    weddin: {}
   }
 
   def self.scrape_and_save(authority)
@@ -57,6 +58,18 @@ class Horizon_xml
       collector = Horizon_xml.new
       collector.base_url    = 'http://myhorizon.solorient.com.au/Horizon/'
       collector.domain      = 'horizondap_walcha'
+      collector.comment_url = 'mailto:council@walcha.nsw.gov.au'
+      collector.period      = 'thismonth'
+
+      collector.getRecords.each do |record|
+      #   p record
+        puts "Saving record " + record['council_reference'] + ", " + record['address']
+        ScraperWiki.save_sqlite(['council_reference'], record)
+      end
+    elsif authority == :weddin
+      collector = Horizon_xml.new
+      collector.base_url    = 'http://myhorizon.solorient.com.au/Horizon/'
+      collector.domain      = 'horizondap'
       collector.comment_url = 'mailto:council@walcha.nsw.gov.au'
       collector.period      = 'thismonth'
 
