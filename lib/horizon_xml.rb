@@ -32,7 +32,7 @@ module HorizonXml
       raise "Unexpected authority: #{authority}"
     end
 
-    HorizonXml.records(base_url, domain, period).each do |record|
+    HorizonXml.scrape_url(base_url, domain, period) do |record|
       save(record)
     end
   end
@@ -121,7 +121,7 @@ module HorizonXml
     end
   end
 
-  def self.records(base_url, domain, period)
+  def self.scrape_url(base_url, domain, period)
     page_size = 500
     start = 0
 
@@ -132,8 +132,6 @@ module HorizonXml
     cookie_url = base_url + "logonGuest.aw?domain=" + domain
 
     info_url ||= cookie_url
-
-    records = []
 
     agent.get(cookie_url)
     page = agent.get(xml_url)
@@ -176,10 +174,8 @@ module HorizonXml
                              .attribute("org_value").text).to_date.to_s
         }
 
-        # adding record to records array
-        records << record
+        yield record
       end
     end
-    records
   end
 end
