@@ -63,13 +63,18 @@ module HorizonXml
       "pageSize=#{page_size}"
   end
 
+  def self.thismonth_query
+    "FIND Applications " \
+      "WHERE " \
+      "MONTH(Applications.Lodged)=CURRENT_MONTH AND " \
+      "YEAR(Applications.Lodged)=CURRENT_YEAR " \
+      "ORDER BY " \
+      "Applications.AppYear DESC," \
+      "Applications.AppNumber DESC"
+  end
+
   def self.thismonth_url(base_url, start, page_size)
-    query_string = "FIND Applications " \
-                   "WHERE " \
-                   "MONTH(Applications.Lodged)=CURRENT_MONTH AND " \
-                   "YEAR(Applications.Lodged)=CURRENT_YEAR " \
-                   "ORDER BY Applications.AppYear DESC,Applications.AppNumber DESC"
-    query_string = query_string.gsub(" ", "+").gsub("=", "%3D").gsub(",", "%2C")
+    query_string = thismonth_query.gsub(" ", "+").gsub("=", "%3D").gsub(",", "%2C")
     "#{base_url}urlRequest.aw?" \
       "actionType=run_query_action&" \
       "query_string=#{query_string}&" \
