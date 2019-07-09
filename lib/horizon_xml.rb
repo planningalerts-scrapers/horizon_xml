@@ -34,9 +34,13 @@ class HorizonXml
 
     collector.period = "thismonth"
     collector.records.each do |record|
-      puts "Saving record " + record["council_reference"] + ", " + record["address"]
-      ScraperWiki.save_sqlite(["council_reference"], record)
+      save(record)
     end
+  end
+
+  def self.save(record)
+    puts "Saving record " + record["council_reference"] + ", " + record["address"]
+    ScraperWiki.save_sqlite(["council_reference"], record)
   end
 
   def initialize
