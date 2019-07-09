@@ -155,24 +155,21 @@ module HorizonXml
 
   def self.scrape_url(base_url, domain, period)
     page_size = 500
-    start = 0
 
     agent = Mechanize.new
 
-    xml_url = HorizonXml.url(period, base_url, start, page_size)
+    xml_url = HorizonXml.url(period, base_url, 0, page_size)
 
     cookie_url = base_url + "logonGuest.aw?domain=" + domain
 
     agent.get(cookie_url)
     page = agent.get(xml_url)
 
-    total = extract_total(page)
-    pages = total / page_size
+    pages = extract_total(page) / page_size
 
     (0..pages).each do |i|
       if i.positive?
-        start = i * page_size
-        xml_url = HorizonXml.url(period, base_url, start, page_size)
+        xml_url = HorizonXml.url(period, base_url, i * page_size, page_size)
         page = agent.get(xml_url)
       end
 
