@@ -3,9 +3,10 @@
 require "mechanize"
 require "scraperwiki"
 
+# Nasty monkeypatch
 class Hash
-  def has_blank?
-    self.values.any?{|v| v.nil? || v.length == 0}
+  def blank?
+    values.any? { |v| v.nil? || v.empty? }
   end
 end
 
@@ -191,38 +192,31 @@ module HorizonXml
 
   def self.scrape_and_save_maitland
     base_url  = "https://myhorizon.maitland.nsw.gov.au/Horizon/logonOp.aw?e=FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxERQgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home"
-    thisweek  = "https://myhorizon.maitland.nsw.gov.au/Horizon/urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+Applications.ApplicationTypeID.IsAvailableOnline%3D%27Yes%27+AND+Applications.CanDisclose%3D%27Yes%27+AND+NOT(Applications.StatusName+IN+%27Pending%27%2C+%27Cancelled%27)+AND+WEEK(Applications.Lodged)%3DCURRENT_WEEK-1+AND+YEAR(Applications.Lodged)%3DCURRENT_YEAR+AND+Application.ApplicationTypeID.Classification%3D%27Application%27+ORDER+BY+Applications.Lodged+DESC&query_name=Application_LodgedThisWeek&take=100&skip=0&start=0&pageSize=100"
     thismonth = "https://myhorizon.maitland.nsw.gov.au/Horizon/urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+Applications.ApplicationTypeID.IsAvailableOnline%3D%27Yes%27+AND+Applications.CanDisclose%3D%27Yes%27+AND+NOT(Applications.StatusName+IN+%27Pending%27%2C+%27Cancelled%27)+AND+MONTH(Applications.Lodged)%3DCURRENT_MONTH+AND+YEAR(Applications.Lodged)%3DCURRENT_YEAR+AND+Application.ApplicationTypeID.Classification%3D%27Application%27+ORDER+BY+Applications.Lodged+DESC&query_name=Application_LodgedThisMonth&take=100&skip=0&start=0&pageSize=100"
-    lastmonth = "https://myhorizon.maitland.nsw.gov.au/Horizon/urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+Applications.ApplicationTypeID.IsAvailableOnline%3D%27Yes%27+AND+Applications.CanDisclose%3D%27Yes%27+AND+NOT(Applications.StatusName+IN+%27Pending%27%2C+%27Cancelled%27)+AND+MONTH(Applications.Lodged-1)%3DCURRENT_MONTH-1+AND+YEAR(Applications.Lodged)%3DCURRENT_YEAR+AND+Application.ApplicationTypeID.Classification%3D%27Application%27+ORDER+BY+Applications.Lodged+DESC&query_name=Application_LodgedLastMonth&take=100&skip=0&start=0&pageSize=100"
 
     comment_url = "mailto:info@maitland.nsw.gov.au"
 
-    time = Time.new
-
-    dateFrom = Date.new(time.year, time.month, 1).strftime('%d/%m/%Y')
-    dateTo   = Date.new(time.year, time.month, -1).strftime('%d/%m/%Y')
     data_url = thismonth
 
     agent = Mechanize.new
-    page = agent.get(base_url)
+    agent.get(base_url)
     page = agent.get(data_url)
     records = page.search("//row")
 
     records.each do |r|
       record = {}
-      record["council_reference"] = r.at("EntryAccount")["org_value"] rescue nil
-      record["address"]           = r.at("PropertyDescription")["org_value"].split(",")[0] rescue nil
-      record["description"]       = r.at("Details")["org_value"] rescue nil
+      record["council_reference"] = r.at("EntryAccount")["org_value"]
+      record["address"]           = r.at("PropertyDescription")["org_value"].split(",")[0]
+      record["description"]       = r.at("Details")["org_value"]
       record["info_url"]          = "https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html"
       record["comment_url"]       = comment_url
       record["date_scraped"]      = Date.today.to_s
-      record["date_received"]     = Date.strptime(r.at("Lodged")["org_value"], '%d/%m/%Y').to_s rescue nil
+      record["date_received"]     = Date.strptime(r.at("Lodged")["org_value"], "%d/%m/%Y").to_s
 
-      unless record.has_blank?
-        puts "Saving record " + record['council_reference'] + ", " + record['address']
-    #       puts record
-        ScraperWiki.save_sqlite(['council_reference'], record)
-      end
+      next if record.blank?
+
+      puts "Saving record " + record["council_reference"] + ", " + record["address"]
+      ScraperWiki.save_sqlite(["council_reference"], record)
     end
   end
 end
