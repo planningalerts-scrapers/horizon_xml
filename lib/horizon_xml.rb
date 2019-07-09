@@ -99,14 +99,15 @@ module HorizonXml
   end
 
   def self.lastmonth_url(base_url, start, page_size)
-    "#{base_url}urlRequest.aw?" \
-    "actionType=run_query_action&" \
-    "query_string=#{encode_query_string(lastmonth_query)}&" \
-    "query_name=SubmittedLastMonth&" \
-    "take=50&" \
-    "skip=0&" \
-    "start=#{start}&" \
-    "pageSize=#{page_size}"
+    "#{base_url}urlRequest.aw?" + {
+      "actionType" => "run_query_action",
+      "query_string" => lastmonth_query,
+      "query_name" => "SubmittedLastMonth",
+      "take" => 50,
+      "skip" => 0,
+      "start" => start,
+      "pageSize" => page_size
+    }.to_query
   end
 
   def self.thismonth_url(base_url, start, page_size)
@@ -133,20 +134,16 @@ module HorizonXml
     }.to_query
   end
 
-  def self.encode_query_string(string)
-    # TODO: Do this properly
-    string.gsub(" ", "+").gsub("=", "%3D").gsub(",", "%2C").gsub("'", "%27")
-  end
-
   def self.thisweek_url(base_url, start, page_size)
-    "#{base_url}urlRequest.aw?" \
-    "actionType=run_query_action&" \
-    "query_string=#{encode_query_string(thisweek_query)}&" \
-    "query_name=SubmittedThisWeek&" \
-    "take=50&" \
-    "skip=0&" \
-    "start=#{start}&" \
-    "pageSize=#{page_size}"
+    "#{base_url}urlRequest.aw?" + {
+      "actionType" => "run_query_action",
+      "query_string" => thisweek_query,
+      "query_name" => "SubmittedThisWeek",
+      "take" => 50,
+      "skip" => 0,
+      "start" => start,
+      "pageSize" => page_size
+    }.to_query
   end
 
   def self.url(period, base_url, start, page_size)
@@ -221,15 +218,16 @@ module HorizonXml
     start_url = "#{base_url}logonOp.aw?e=" \
                 "FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxER" \
                 "QgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home"
-    query_string = encode_query_string(thismonth_query2)
-    data_url = "#{base_url}urlRequest.aw?" \
-               "actionType=run_query_action&" \
-               "query_string=#{query_string}&" \
-               "query_name=Application_LodgedThisMonth&" \
-               "take=100&" \
-               "skip=0&" \
-               "start=0&" \
-               "pageSize=100"
+
+    data_url = "#{base_url}urlRequest.aw?" + {
+      "actionType" => "run_query_action",
+      "query_string" => thismonth_query2,
+      "query_name" => "Application_LodgedThisMonth",
+      "take" => 100,
+      "skip" => 0,
+      "start" => 0,
+      "pageSize" => 100
+    }.to_query
 
     agent = Mechanize.new
     agent.get(start_url)
