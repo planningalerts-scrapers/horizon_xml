@@ -98,64 +98,71 @@ module HorizonXml
     "ORDER BY Applications.AppYear DESC,Applications.AppNumber DESC"
   end
 
-  def self.lastmonth_url(base_url, start, page_size)
+  def self.query_url(base_url:, query_string:, query_name:, take:, start:, page_size:)
     "#{base_url}urlRequest.aw?" + {
       "actionType" => "run_query_action",
-      "query_string" => lastmonth_query,
-      "query_name" => "SubmittedLastMonth",
-      "take" => 50,
+      "query_string" => query_string,
+      "query_name" => query_name,
+      "take" => take,
       "skip" => 0,
       "start" => start,
       "pageSize" => page_size
     }.to_query
+  end
+
+  def self.lastmonth_url(base_url, start, page_size)
+    query_url(
+      base_url: base_url,
+      query_string: lastmonth_query,
+      query_name: "SubmittedLastMonth",
+      take: 50,
+      start: start,
+      page_size: page_size
+    )
   end
 
   def self.thismonth_url(base_url, start, page_size)
-    "#{base_url}urlRequest.aw?" + {
-      "actionType" => "run_query_action",
-      "query_string" => thismonth_query,
-      "query_name" => "SubmittedThisMonth",
-      "take" => 50,
-      "skip" => 0,
-      "start" => start,
-      "pageSize" => page_size
-    }.to_query
+    query_url(
+      base_url: base_url,
+      query_string: thismonth_query,
+      query_name: "SubmittedThisMonth",
+      take: 50,
+      start: start,
+      page_size: page_size
+    )
   end
 
   def self.thismonth_url2(base_url)
-    "#{base_url}urlRequest.aw?" + {
-      "actionType" => "run_query_action",
-      "query_string" => thismonth_query2,
-      "query_name" => "Application_LodgedThisMonth",
-      "take" => 100,
-      "skip" => 0,
-      "start" => 0,
-      "pageSize" => 100
-    }.to_query
+    query_url(
+      base_url: base_url,
+      query_string: thismonth_query2,
+      query_name: "Application_LodgedThisMonth",
+      take: 100,
+      start: 0,
+      page_size: 100
+    )
   end
 
   def self.year_url(base_url, period, start, page_size)
-    "#{base_url}urlRequest.aw?" + {
-      "actionType" => "run_query_action",
-      "query_string" => year_query(period),
-      "query_name" => "Applications_List_Search",
-      "take" => 50,
-      "skip" => 0,
-      "start" => start,
-      "pageSize" => page_size
-    }.to_query
+    query_url(
+      base_url: base_url,
+      query_string: year_query(period),
+      query_name: "Applications_List_Search",
+      take: 50,
+      start: start,
+      page_size: page_size
+    )
   end
 
   def self.thisweek_url(base_url, start, page_size)
-    "#{base_url}urlRequest.aw?" + {
-      "actionType" => "run_query_action",
-      "query_string" => thisweek_query,
-      "query_name" => "SubmittedThisWeek",
-      "take" => 50,
-      "skip" => 0,
-      "start" => start,
-      "pageSize" => page_size
-    }.to_query
+    query_url(
+      base_url: base_url,
+      query_string: thisweek_query,
+      query_name: "SubmittedThisWeek",
+      take: 50,
+      start: start,
+      page_size: page_size
+    )
   end
 
   def self.url(period, base_url, start, page_size)
