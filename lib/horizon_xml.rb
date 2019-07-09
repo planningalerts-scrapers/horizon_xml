@@ -155,10 +155,9 @@ module HorizonXml
 
   def self.scrape_url(base_url, domain, period)
     page_size = 500
+    cookie_url = "#{base_url}logonGuest.aw?domain=#{domain}"
 
     agent = Mechanize.new
-
-    cookie_url = "#{base_url}logonGuest.aw?domain=#{domain}"
 
     agent.get(cookie_url)
     page = agent.get(HorizonXml.url(period, base_url, 0, page_size))
