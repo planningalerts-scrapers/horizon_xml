@@ -44,7 +44,6 @@ class HorizonXml
   end
 
   def initialize
-    @executed     = false
     @period       = nil
     @info_url     = nil
     @xml_url      = nil
@@ -65,7 +64,7 @@ class HorizonXml
   attr_accessor :agent
 
   def records
-    _execute unless @executed
+    _execute
     @records
   end
 
