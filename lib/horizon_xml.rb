@@ -3,14 +3,6 @@
 require "mechanize"
 require "scraperwiki"
 
-# Monkey patch of hash
-# TODO: Get rid of this monkey-patch
-class Hash
-  def blank?
-    values.any? { |v| v.nil? || v.empty? }
-  end
-end
-
 # Scrape horizon (solorient) site
 class HorizonXml
   AUTHORITIES = {
@@ -53,7 +45,6 @@ class HorizonXml
 
   def initialize
     @executed     = false
-    @allow_blanks = false
     @period       = nil
     @info_url     = nil
     @xml_url      = nil
@@ -66,7 +57,6 @@ class HorizonXml
     @agent        = nil
   end
 
-  attr_accessor :allow_blanks
   attr_accessor :period
   attr_accessor :info_url
   attr_accessor :domain
@@ -208,11 +198,7 @@ class HorizonXml
           }
 
           # adding record to records array
-          if @allow_blanks
-            @records << record
-          else
-            @records << record unless record.blank?
-          end
+          @records << record
         end
       end
     end
