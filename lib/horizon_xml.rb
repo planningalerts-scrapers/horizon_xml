@@ -2,6 +2,7 @@
 
 require "mechanize"
 require "scraperwiki"
+require "active_support/core_ext/hash"
 
 # Scrape horizon (solorient) site
 module HorizonXml
@@ -100,25 +101,27 @@ module HorizonXml
   end
 
   def self.thismonth_url(base_url, start, page_size)
-    "#{base_url}urlRequest.aw?" \
-      "actionType=run_query_action&" \
-      "query_string=#{encode_query_string(thismonth_query)}&" \
-      "query_name=SubmittedThisMonth&" \
-      "take=50&" \
-      "skip=0&" \
-      "start=#{start}&" \
-      "pageSize=#{page_size}"
+    "#{base_url}urlRequest.aw?" + {
+      "actionType" => "run_query_action",
+      "query_string" => thismonth_query,
+      "query_name" => "SubmittedThisMonth",
+      "take" => 50,
+      "skip" => 0,
+      "start" => start,
+      "pageSize" => page_size
+    }.to_query
   end
 
   def self.year_url(base_url, period, start, page_size)
-    "#{base_url}urlRequest.aw?" \
-      "actionType=run_query_action&" \
-      "query_string=#{encode_query_string(year_query(period))}&" \
-      "query_name=Applications_List_Search&" \
-      "take=50&" \
-      "skip=0&" \
-      "start=#{start}&" \
-      "pageSize=#{page_size}"
+    "#{base_url}urlRequest.aw?" + {
+      "actionType" => "run_query_action",
+      "query_string" => year_query(period),
+      "query_name" => "Applications_List_Search",
+      "take" => 50,
+      "skip" => 0,
+      "start" => start,
+      "pageSize" => page_size
+    }.to_query
   end
 
   def self.encode_query_string(string)

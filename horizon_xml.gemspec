@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://rubygems.org/gems/horizon_xml"
   s.license     = "MIT"
 
+  s.add_dependency "activesupport"
   s.add_dependency "mechanize"
   s.add_dependency "scraperwiki"
 
