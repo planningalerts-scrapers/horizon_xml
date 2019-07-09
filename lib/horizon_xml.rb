@@ -166,8 +166,6 @@ module HorizonXml
     agent.get(cookie_url)
     page = agent.get(xml_url)
 
-    xml = Nokogiri::XML(page.body)
-
     total = extract_total(page)
     pages = total / page_size
 
@@ -176,7 +174,6 @@ module HorizonXml
         start = i * page_size
         xml_url = HorizonXml.url(period, base_url, start, page_size)
         page = agent.get(xml_url)
-        xml  = Nokogiri::XML(page.body)
       end
 
       scrape_page(page, cookie_url) do |record|
