@@ -64,7 +64,55 @@ class HorizonXml
   attr_accessor :agent
 
   def records
-    _execute
+    if check_params
+      @records = []
+
+      @agent.get(@cookie_url)
+      page = @agent.get(@xml_url)
+
+      xml = Nokogiri::XML(page.body)
+
+      total = xml.xpath("//run_query_action_return/run_query_action_success/dataset/total")
+                 .text
+                 .to_i
+      pages = total / @pagesize
+
+      (0..pages).each do |i|
+        if i.positive?
+          @start = i * @pagesize
+          setPeriod(@period)
+          page = @agent.get(@xml_url)
+          xml  = Nokogiri::XML(page.body)
+        end
+
+        xml.xpath("//run_query_action_return/run_query_action_success/dataset/row").each do |app|
+          council_reference = unless app.xpath("AccountNumber").attribute("org_value").text.empty?
+                                app.xpath("AccountNumber").attribute("org_value").text.strip
+                              end
+          # TODO: Make state configurable
+          address = unless app.xpath("Property").attribute("org_value").text.empty?
+                      (app.xpath("Property").attribute("org_value").text + " NSW").strip
+                    end
+
+          description = unless app.xpath("Description").attribute("org_value").text.empty?
+                          app.xpath("Description").attribute("org_value").text.strip
+                        end
+
+          record = {
+            "council_reference" => council_reference,
+            "address" => address,
+            "description" => description,
+            "info_url" => @info_url,
+            "date_scraped" => Date.today.to_s,
+            "date_received" => DateTime.parse(app.xpath("Lodged")
+                               .attribute("org_value").text).to_date.to_s
+          }
+
+          # adding record to records array
+          @records << record
+        end
+      end
+    end
     @records
   end
 
@@ -150,58 +198,5 @@ class HorizonXml
     raise "Domain is not set." unless @domain
 
     true
-  end
-
-  def _execute
-    if check_params
-      @records = []
-
-      @agent.get(@cookie_url)
-      page = @agent.get(@xml_url)
-
-      xml = Nokogiri::XML(page.body)
-
-      total = xml.xpath("//run_query_action_return/run_query_action_success/dataset/total")
-                 .text
-                 .to_i
-      pages = total / @pagesize
-
-      (0..pages).each do |i|
-        if i.positive?
-          @start = i * @pagesize
-          setPeriod(@period)
-          page = @agent.get(@xml_url)
-          xml  = Nokogiri::XML(page.body)
-        end
-
-        xml.xpath("//run_query_action_return/run_query_action_success/dataset/row").each do |app|
-          council_reference = unless app.xpath("AccountNumber").attribute("org_value").text.empty?
-                                app.xpath("AccountNumber").attribute("org_value").text.strip
-                              end
-          # TODO: Make state configurable
-          address = unless app.xpath("Property").attribute("org_value").text.empty?
-                      (app.xpath("Property").attribute("org_value").text + " NSW").strip
-                    end
-
-          description = unless app.xpath("Description").attribute("org_value").text.empty?
-                          app.xpath("Description").attribute("org_value").text.strip
-                        end
-
-          record = {
-            "council_reference" => council_reference,
-            "address" => address,
-            "description" => description,
-            "info_url" => @info_url,
-            "date_scraped" => Date.today.to_s,
-            "date_received" => DateTime.parse(app.xpath("Lodged")
-                               .attribute("org_value").text).to_date.to_s
-          }
-
-          # adding record to records array
-          @records << record
-        end
-      end
-    end
-    self
   end
 end
