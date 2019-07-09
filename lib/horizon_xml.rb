@@ -28,27 +28,22 @@ class HorizonXml
     if authority == :cowra
       collector.base_url    = "http://myhorizon.solorient.com.au/Horizon/"
       collector.domain      = "horizondap_cowra"
-      collector.comment_url = "mailto:council@cowra.nsw.gov.au"
       collector.period      = ENV["MORPH_PERIOD"]
     elsif authority == :liverpool_plains
       collector.base_url    = "http://myhorizon.solorient.com.au/Horizon/"
       collector.domain      = "horizondap_lpsc"
-      collector.comment_url = "mailto:lpsc@lpsc.nsw.gov.au"
       collector.period      = ENV["MORPH_PERIOD"]
     elsif authority == :uralla
       collector.base_url    = "http://myhorizon.solorient.com.au/Horizon/"
       collector.domain      = "horizondap_uralla"
-      collector.comment_url = "mailto:council@uralla.nsw.gov.au"
       collector.period      = ENV["MORPH_PERIOD"]
     elsif authority == :walcha
       collector.base_url    = "http://myhorizon.solorient.com.au/Horizon/"
       collector.domain      = "horizondap_walcha"
-      collector.comment_url = "mailto:council@walcha.nsw.gov.au"
       collector.period      = "thismonth"
     elsif authority == :weddin
       collector.base_url    = "http://myhorizon.solorient.com.au/Horizon/"
       collector.domain      = "horizondap"
-      collector.comment_url = "mailto:council@walcha.nsw.gov.au"
       collector.period      = "thismonth"
     else
       raise "Unexpected authority: #{authority}"
@@ -66,7 +61,6 @@ class HorizonXml
     @allow_blanks = false
     @period       = nil
     @info_url     = nil
-    @comment_url  = nil
     @xml_url      = nil
     @domain       = nil
     @cookie_url   = nil
@@ -80,7 +74,6 @@ class HorizonXml
   attr_accessor :allow_blanks
   attr_accessor :period
   attr_accessor :info_url
-  attr_accessor :comment_url
   attr_accessor :domain
   attr_accessor :base_url
   attr_accessor :pagesize
@@ -167,7 +160,6 @@ class HorizonXml
     @cookie_url = @base_url + "logonGuest.aw?domain=" + @domain
 
     @info_url ||= @cookie_url
-    @comment_url ||= @cookie_url
 
     raise "Base's URL is not set." unless @base_url
     raise "Domain is not set." unless @domain
@@ -224,7 +216,6 @@ class HorizonXml
             "address" => address,
             "description" => description,
             "info_url" => @info_url,
-            "comment_url" => @comment_url,
             "date_scraped" => Date.today.to_s,
             "date_received" => DateTime.parse(app.xpath("Lodged")
                                .attribute("org_value").text).to_date.to_s
