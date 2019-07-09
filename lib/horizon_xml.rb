@@ -50,54 +50,63 @@ module HorizonXml
 
   def self.thismonth_query
     "FIND Applications " \
-      "WHERE " \
-      "MONTH(Applications.Lodged)=CURRENT_MONTH AND " \
-      "YEAR(Applications.Lodged)=CURRENT_YEAR " \
-      "ORDER BY " \
-      "Applications.Lodged DESC"
+    "WHERE " \
+    "MONTH(Applications.Lodged)=CURRENT_MONTH AND " \
+    "YEAR(Applications.Lodged)=CURRENT_YEAR " \
+    "ORDER BY " \
+    "Applications.Lodged DESC"
   end
 
   def self.thismonth_query2
     "FIND Applications " \
-      "WHERE " \
-      "Applications.ApplicationTypeID.IsAvailableOnline='Yes' AND " \
-      "Applications.CanDisclose='Yes' AND " \
-      "NOT(Applications.StatusName IN 'Pending', 'Cancelled') AND " \
-      "MONTH(Applications.Lodged)=CURRENT_MONTH AND " \
-      "YEAR(Applications.Lodged)=CURRENT_YEAR AND " \
-      "Application.ApplicationTypeID.Classification='Application' " \
-      "ORDER BY " \
-      "Applications.Lodged DESC"
+    "WHERE " \
+    "Applications.ApplicationTypeID.IsAvailableOnline='Yes' AND " \
+    "Applications.CanDisclose='Yes' AND " \
+    "NOT(Applications.StatusName IN 'Pending', 'Cancelled') AND " \
+    "MONTH(Applications.Lodged)=CURRENT_MONTH AND " \
+    "YEAR(Applications.Lodged)=CURRENT_YEAR AND " \
+    "Application.ApplicationTypeID.Classification='Application' " \
+    "ORDER BY " \
+    "Applications.Lodged DESC"
   end
 
   def self.lastmonth_query
     "FIND Applications " \
-      "WHERE+MONTH(Applications.Lodged-1)=SystemSettings.SearchMonthPrevious AND " \
-      "YEAR(Applications.Lodged)=SystemSettings.SearchYear AND " \
-      "Applications.CanDisclose='Yes' " \
-      "ORDER BY Applications.AppYear DESC,Applications.AppNumber DESC"
+    "WHERE+MONTH(Applications.Lodged-1)=SystemSettings.SearchMonthPrevious AND " \
+    "YEAR(Applications.Lodged)=SystemSettings.SearchYear AND " \
+    "Applications.CanDisclose='Yes' " \
+    "ORDER BY Applications.AppYear DESC,Applications.AppNumber DESC"
   end
 
   def self.year_query(period)
     "FIND Applications " \
-      "WHERE " \
-      "Applications.AppYear=#{period} AND " \
-      "Applications.CanDisclose='Yes' " \
-      "ORDER BY " \
-      "Applications.Lodged DESC," \
-      "Applications.AppYear DESC," \
-      "Applications.AppNumber DESC"
+    "WHERE " \
+    "Applications.AppYear=#{period} AND " \
+    "Applications.CanDisclose='Yes' " \
+    "ORDER BY " \
+    "Applications.Lodged DESC," \
+    "Applications.AppYear DESC," \
+    "Applications.AppNumber DESC"
+  end
+
+  def self.thisweek_query
+    "FIND Applications " \
+    "WHERE " \
+    "WEEK(Applications.Lodged)=CURRENT_WEEK-1 AND " \
+    "YEAR(Applications.Lodged)=CURRENT_YEAR AND " \
+    "Applications.CanDisclose='Yes' " \
+    "ORDER BY Applications.AppYear DESC,Applications.AppNumber DESC"
   end
 
   def self.lastmonth_url(base_url, start, page_size)
     "#{base_url}urlRequest.aw?" \
-      "actionType=run_query_action&" \
-      "query_string=#{encode_query_string(lastmonth_query)}&" \
-      "query_name=SubmittedLastMonth&" \
-      "take=50&" \
-      "skip=0&" \
-      "start=#{start}&" \
-      "pageSize=#{page_size}"
+    "actionType=run_query_action&" \
+    "query_string=#{encode_query_string(lastmonth_query)}&" \
+    "query_name=SubmittedLastMonth&" \
+    "take=50&" \
+    "skip=0&" \
+    "start=#{start}&" \
+    "pageSize=#{page_size}"
   end
 
   def self.thismonth_url(base_url, start, page_size)
@@ -130,22 +139,14 @@ module HorizonXml
   end
 
   def self.thisweek_url(base_url, start, page_size)
-    query_string = "FIND Applications " \
-                   "WHERE " \
-                   "WEEK(Applications.Lodged)=CURRENT_WEEK-1 AND " \
-                   "YEAR(Applications.Lodged)=CURRENT_YEAR AND " \
-                   "Applications.CanDisclose='Yes' " \
-                   "ORDER BY Applications.AppYear DESC,Applications.AppNumber DESC"
-    query_string = encode_query_string(query_string)
-
     "#{base_url}urlRequest.aw?" \
-      "actionType=run_query_action&" \
-      "query_string=#{query_string}&" \
-      "query_name=SubmittedThisWeek&" \
-      "take=50&" \
-      "skip=0&" \
-      "start=#{start}&" \
-      "pageSize=#{page_size}"
+    "actionType=run_query_action&" \
+    "query_string=#{encode_query_string(thisweek_query)}&" \
+    "query_name=SubmittedThisWeek&" \
+    "take=50&" \
+    "skip=0&" \
+    "start=#{start}&" \
+    "pageSize=#{page_size}"
   end
 
   def self.url(period, base_url, start, page_size)
