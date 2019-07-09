@@ -53,10 +53,7 @@ module HorizonXml
                    "YEAR(Applications.Lodged)=SystemSettings.SearchYear AND " \
                    "Applications.CanDisclose='Yes' " \
                    "ORDER BY Applications.AppYear DESC,Applications.AppNumber DESC"
-    query_string = query_string.gsub(" ", "+")
-                               .gsub("=", "%3D")
-                               .gsub(",", "%2C")
-                               .gsub("'", "%27")
+    query_string = encode_query_string(query_string)
 
     "#{base_url}urlRequest.aw?" \
       "actionType=run_query_action&" \
@@ -91,10 +88,7 @@ module HorizonXml
   end
 
   def self.thismonth_url(base_url, start, page_size)
-    query_string = thismonth_query.gsub(" ", "+")
-                                  .gsub("=", "%3D")
-                                  .gsub(",", "%2C")
-                                  .gsub("'", "%27")
+    query_string = encode_query_string(thismonth_query)
     "#{base_url}urlRequest.aw?" \
       "actionType=run_query_action&" \
       "query_string=#{query_string}&" \
@@ -114,10 +108,7 @@ module HorizonXml
                    "Applications.Lodged DESC," \
                    "Applications.AppYear DESC," \
                    "Applications.AppNumber DESC"
-    query_string = query_string.gsub(" ", "+")
-                               .gsub("=", "%3D")
-                               .gsub(",", "%2C")
-                               .gsub("'", "%27")
+    query_string = encode_query_string(query_string)
 
     "#{base_url}urlRequest.aw?" \
       "actionType=run_query_action&" \
@@ -129,6 +120,11 @@ module HorizonXml
       "pageSize=#{page_size}"
   end
 
+  def self.encode_query_string(string)
+    # TODO: Do this properly
+    string.gsub(" ", "+").gsub("=", "%3D").gsub(",", "%2C").gsub("'", "%27")
+  end
+
   def self.thisweek_url(base_url, start, page_size)
     query_string = "FIND Applications " \
                    "WHERE " \
@@ -136,10 +132,7 @@ module HorizonXml
                    "YEAR(Applications.Lodged)=CURRENT_YEAR AND " \
                    "Applications.CanDisclose='Yes' " \
                    "ORDER BY Applications.AppYear DESC,Applications.AppNumber DESC"
-    query_string = query_string.gsub(" ", "+")
-                               .gsub("=", "%3D")
-                               .gsub(",", "%2C")
-                               .gsub("'", "%27")
+    query_string = encode_query_string(query_string)
 
     "#{base_url}urlRequest.aw?" \
       "actionType=run_query_action&" \
@@ -223,10 +216,7 @@ module HorizonXml
     start_url = "#{base_url}logonOp.aw?e=" \
                 "FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxER" \
                 "QgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home"
-    query_string = thismonth_query2.gsub(" ", "+")
-                                   .gsub("=", "%3D")
-                                   .gsub(",", "%2C")
-                                   .gsub("'", "%27")
+    query_string = encode_query_string(thismonth_query2)
     data_url = "#{base_url}urlRequest.aw?" \
                "actionType=run_query_action&" \
                "query_string=#{query_string}&" \
