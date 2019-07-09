@@ -44,16 +44,10 @@ class HorizonXml
   end
 
   def initialize
-    @period       = nil
-    @info_url     = nil
-    @xml_url      = nil
-    @domain       = nil
-    @cookie_url   = nil
     # "http://myhorizon.solorient.com.au/Horizon/" if it is cloud service
     @base_url     = ""
     @pagesize     = 500
     @start        = 0
-    @agent        = nil
   end
 
   attr_accessor :period
