@@ -24,25 +24,21 @@ class HorizonXml
 
   def self.scrape_and_save(authority)
     collector = HorizonXml.new
+    collector.base_url = "http://myhorizon.solorient.com.au/Horizon/"
 
     if authority == :cowra
-      collector.base_url    = "http://myhorizon.solorient.com.au/Horizon/"
       collector.domain      = "horizondap_cowra"
       collector.period      = ENV["MORPH_PERIOD"]
     elsif authority == :liverpool_plains
-      collector.base_url    = "http://myhorizon.solorient.com.au/Horizon/"
       collector.domain      = "horizondap_lpsc"
       collector.period      = ENV["MORPH_PERIOD"]
     elsif authority == :uralla
-      collector.base_url    = "http://myhorizon.solorient.com.au/Horizon/"
       collector.domain      = "horizondap_uralla"
       collector.period      = ENV["MORPH_PERIOD"]
     elsif authority == :walcha
-      collector.base_url    = "http://myhorizon.solorient.com.au/Horizon/"
       collector.domain      = "horizondap_walcha"
       collector.period      = "thismonth"
     elsif authority == :weddin
-      collector.base_url    = "http://myhorizon.solorient.com.au/Horizon/"
       collector.domain      = "horizondap"
       collector.period      = "thismonth"
     else
