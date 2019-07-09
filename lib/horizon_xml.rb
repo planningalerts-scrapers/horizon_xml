@@ -43,17 +43,6 @@ class HorizonXml
     ScraperWiki.save_sqlite(["council_reference"], record)
   end
 
-  def initialize
-    # "http://myhorizon.solorient.com.au/Horizon/" if it is cloud service
-    @base_url     = ""
-    @pagesize     = 500
-    @start        = 0
-  end
-
-  attr_accessor :period
-  attr_accessor :domain
-  attr_accessor :base_url
-
   def self.lastmonth_url(base_url, start, page_size)
     "#{base_url}urlRequest.aw?" \
                "actionType=run_query_action&" \
@@ -133,35 +122,42 @@ class HorizonXml
     end
   end
 
+  attr_accessor :period
+  attr_accessor :domain
+  attr_accessor :base_url
+
   def records
-    agent = Mechanize.new
-
-    @xml_url = HorizonXml.url(@period, @base_url, @start, @pagesize)
-
-    @cookie_url = @base_url + "logonGuest.aw?domain=" + @domain
-
-    @info_url ||= @cookie_url
-
     raise "Base's URL is not set." unless @base_url
     raise "Domain is not set." unless @domain
 
-    @records = []
+    page_size = 500
+    start = 0
 
-    agent.get(@cookie_url)
-    page = agent.get(@xml_url)
+    agent = Mechanize.new
+
+    xml_url = HorizonXml.url(@period, @base_url, start, page_size)
+
+    cookie_url = @base_url + "logonGuest.aw?domain=" + @domain
+
+    info_url ||= cookie_url
+
+    records = []
+
+    agent.get(cookie_url)
+    page = agent.get(xml_url)
 
     xml = Nokogiri::XML(page.body)
 
     total = xml.xpath("//run_query_action_return/run_query_action_success/dataset/total")
                .text
                .to_i
-    pages = total / @pagesize
+    pages = total / page_size
 
     (0..pages).each do |i|
       if i.positive?
-        @start = i * @pagesize
-        @xml_url = HorizonXml.url(@period, @base_url, @start, @pagesize)
-        page = agent.get(@xml_url)
+        start = i * page_size
+        xml_url = HorizonXml.url(@period, @base_url, start, page_size)
+        page = agent.get(xml_url)
         xml  = Nokogiri::XML(page.body)
       end
 
@@ -182,16 +178,16 @@ class HorizonXml
           "council_reference" => council_reference,
           "address" => address,
           "description" => description,
-          "info_url" => @info_url,
+          "info_url" => info_url,
           "date_scraped" => Date.today.to_s,
           "date_received" => DateTime.parse(app.xpath("Lodged")
                              .attribute("org_value").text).to_date.to_s
         }
 
         # adding record to records array
-        @records << record
+        records << record
       end
     end
-    @records
+    records
   end
 end
