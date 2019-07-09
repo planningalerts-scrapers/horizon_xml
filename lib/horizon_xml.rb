@@ -85,12 +85,13 @@ class HorizonXml
                  "pageSize=#{@pagesize}"
     when "thismonth"
       @period = "thismonth"
+      query_string = "FIND+Applications+WHERE+" \
+                     "MONTH(Applications.Lodged)%3DCURRENT_MONTH+AND+" \
+                     "YEAR(Applications.Lodged)%3DCURRENT_YEAR+" \
+                     "ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC"
       @xml_url = "#{@base_url}urlRequest.aw?" \
                  "actionType=run_query_action&" \
-                 "query_string=FIND+Applications+WHERE+" \
-                 "MONTH(Applications.Lodged)%3DCURRENT_MONTH+AND+" \
-                 "YEAR(Applications.Lodged)%3DCURRENT_YEAR+" \
-                 "ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC&" \
+                 "query_string=#{query_string}&" \
                  "query_name=SubmittedThisMonth&" \
                  "take=50&" \
                  "skip=0&" \
