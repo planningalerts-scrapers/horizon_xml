@@ -158,20 +158,15 @@ module HorizonXml
 
     agent = Mechanize.new
 
-    xml_url = HorizonXml.url(period, base_url, 0, page_size)
-
-    cookie_url = base_url + "logonGuest.aw?domain=" + domain
+    cookie_url = "#{base_url}logonGuest.aw?domain=#{domain}"
 
     agent.get(cookie_url)
-    page = agent.get(xml_url)
+    page = agent.get(HorizonXml.url(period, base_url, 0, page_size))
 
     pages = extract_total(page) / page_size
 
     (0..pages).each do |i|
-      if i.positive?
-        xml_url = HorizonXml.url(period, base_url, i * page_size, page_size)
-        page = agent.get(xml_url)
-      end
+      page = agent.get(HorizonXml.url(period, base_url, i * page_size, page_size)) if i.positive?
 
       scrape_page(page, cookie_url) do |record|
         yield record
