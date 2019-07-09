@@ -73,6 +73,19 @@ module HorizonXml
       "Applications.AppNumber DESC"
   end
 
+  def self.thismonth_query2
+    "FIND Applications " \
+      "WHERE " \
+      "Applications.ApplicationTypeID.IsAvailableOnline='Yes' AND " \
+      "Applications.CanDisclose='Yes' AND " \
+      "NOT(Applications.StatusName IN 'Pending', 'Cancelled') AND " \
+      "MONTH(Applications.Lodged)=CURRENT_MONTH AND " \
+      "YEAR(Applications.Lodged)=CURRENT_YEAR AND " \
+      "Application.ApplicationTypeID.Classification='Application' " \
+      "ORDER BY " \
+      "Applications.Lodged DESC"
+  end
+
   def self.thismonth_url(base_url, start, page_size)
     query_string = thismonth_query.gsub(" ", "+").gsub("=", "%3D").gsub(",", "%2C")
     "#{base_url}urlRequest.aw?" \
@@ -190,15 +203,10 @@ module HorizonXml
 
   def self.scrape_and_save_maitland
     base_url = "https://myhorizon.maitland.nsw.gov.au/Horizon/logonOp.aw?e=FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxERQgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home"
-    query_string = "FIND Applications " \
-                   "WHERE Applications.ApplicationTypeID.IsAvailableOnline='Yes' AND " \
-                   "Applications.CanDisclose='Yes' AND " \
-                   "NOT(Applications.StatusName IN 'Pending', 'Cancelled') AND " \
-                   "MONTH(Applications.Lodged)=CURRENT_MONTH AND " \
-                   "YEAR(Applications.Lodged)=CURRENT_YEAR AND " \
-                   "Application.ApplicationTypeID.Classification='Application' " \
-                   "ORDER BY Applications.Lodged DESC"
-    query_string = query_string.gsub(" ", "+").gsub("=", "%3D").gsub(",", "%2C").gsub("'", "%27")
+    query_string = thismonth_query2.gsub(" ", "+")
+                                   .gsub("=", "%3D")
+                                   .gsub(",", "%2C")
+                                   .gsub("'", "%27")
     data_url = "https://myhorizon.maitland.nsw.gov.au/Horizon/urlRequest.aw?" \
                "actionType=run_query_action&" \
                "query_string=#{query_string}&" \
