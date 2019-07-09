@@ -51,11 +51,8 @@ class HorizonXml
   end
 
   attr_accessor :period
-  attr_accessor :info_url
   attr_accessor :domain
   attr_accessor :base_url
-  attr_accessor :pagesize
-  attr_accessor :agent
 
   def records
     if check_params
