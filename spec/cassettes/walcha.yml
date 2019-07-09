@@ -31,13 +31,13 @@ http_interactions:
       Server:
       - Apache-Coyote/1.1
       Set-Cookie:
-      - JSESSIONID=177ADC0A4DB8B30C2EE21A9FB440DCF4; Path=/Horizon/; HttpOnly
+      - JSESSIONID=C6709473220C2279F62DFD80B539DF8E; Path=/Horizon/; HttpOnly
       Content-Type:
       - text/html;charset=UTF-8
       Transfer-Encoding:
       - chunked
       Date:
-      - Tue, 09 Jul 2019 00:44:42 GMT
+      - Tue, 09 Jul 2019 06:36:53 GMT
     body:
       encoding: UTF-8
       string: "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">
@@ -242,7 +242,7 @@ http_interactions:
   recorded_at: Tue, 14 May 2019 14:00:00 GMT
 - request:
     method: get
-    uri: http://myhorizon.solorient.com.au/Horizon/urlRequest.aw?actionType=run_query_action&pageSize=500&query_name=SubmittedThisMonth&query_string=FIND%20Applications%20WHERE%20MONTH(Applications.Lodged)=CURRENT_MONTH%20AND%20YEAR(Applications.Lodged)=CURRENT_YEAR%20ORDER%20BY%20Applications.AppYear%20DESC,Applications.AppNumber%20DESC&skip=0&start=0&take=50
+    uri: http://myhorizon.solorient.com.au/Horizon/urlRequest.aw?actionType=run_query_action&pageSize=500&query_name=SubmittedThisMonth&query_string=FIND%20Applications%20WHERE%20MONTH(Applications.Lodged)=CURRENT_MONTH%20AND%20YEAR(Applications.Lodged)=CURRENT_YEAR%20ORDER%20BY%20Applications.Lodged%20DESC&skip=0&start=0&take=50
     body:
       encoding: US-ASCII
       string: ''
@@ -258,7 +258,7 @@ http_interactions:
       Accept-Language:
       - en-us,en;q=0.5
       Cookie:
-      - JSESSIONID=177ADC0A4DB8B30C2EE21A9FB440DCF4
+      - JSESSIONID=C6709473220C2279F62DFD80B539DF8E
       Host:
       - myhorizon.solorient.com.au
       Connection:
@@ -279,22 +279,12 @@ http_interactions:
       Transfer-Encoding:
       - chunked
       Date:
-      - Tue, 09 Jul 2019 00:44:42 GMT
+      - Tue, 09 Jul 2019 06:36:53 GMT
     body:
       encoding: UTF-8
       string: "<?xml version='1.0' encoding='UTF-8' ?> \r\n<root> \r\n<run_query_action_return>
         \r\n<run_query_action_success> \r\n<dataset> \r\n<total>4</total> \r\n<row>
-        \r\n<id>731362625</id> \r\n<BAS_REF_VALUE>Applications:731362625</BAS_REF_VALUE>
-        \r\n<AppType org_value=\"Construction Certificate\"></AppType> \r\n<AccountNumber
-        org_value=\"CC 2019/242.1\"></AccountNumber> \r\n<Description org_value=\"Garage
-        / Carport / Shed\"></Description> \r\n<Lodged org_value=\"01/07/2019\"></Lodged>
-        \r\n<Property org_value=\"58W Fitzroy Street WALCHA 2354\"></Property> \r\n<Applicant
-        org_value=\"Mr A J Dark\"></Applicant> \r\n<AppYear org_value=\"2019\"></AppYear>
-        \r\n<AppNumber org_value=\"242\"></AppNumber> \r\n<PCA org_value=\"Walcha
-        Council\"></PCA> \r\n<Builder org_value=\"\"></Builder> \r\n<EstimatedCost
-        org_value=\"2500\"></EstimatedCost> \r\n<Officer org_value=\"Mrs L J Latham\"></Officer>
-        \r\n<LEP org_value=\"\"></LEP> \r\n<BAS_PROTECTED></BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
-        \r\n</row> \r\n<row> \r\n<id>731362624</id> \r\n<BAS_REF_VALUE>Applications:731362624</BAS_REF_VALUE>
+        \r\n<id>731362624</id> \r\n<BAS_REF_VALUE>Applications:731362624</BAS_REF_VALUE>
         \r\n<AppType org_value=\"Construction Certificate\"></AppType> \r\n<AccountNumber
         org_value=\"CC 2019/241.1\"></AccountNumber> \r\n<Description org_value=\"Garage
         / Carport / Shed\"></Description> \r\n<Lodged org_value=\"01/07/2019\"></Lodged>
@@ -303,6 +293,16 @@ http_interactions:
         \r\n<AppNumber org_value=\"241\"></AppNumber> \r\n<PCA org_value=\"Walcha
         Council\"></PCA> \r\n<Builder org_value=\"\"></Builder> \r\n<EstimatedCost
         org_value=\"35000\"></EstimatedCost> \r\n<Officer org_value=\"Pty Ltd\"></Officer>
+        \r\n<LEP org_value=\"\"></LEP> \r\n<BAS_PROTECTED></BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
+        \r\n</row> \r\n<row> \r\n<id>731362625</id> \r\n<BAS_REF_VALUE>Applications:731362625</BAS_REF_VALUE>
+        \r\n<AppType org_value=\"Construction Certificate\"></AppType> \r\n<AccountNumber
+        org_value=\"CC 2019/242.1\"></AccountNumber> \r\n<Description org_value=\"Garage
+        / Carport / Shed\"></Description> \r\n<Lodged org_value=\"01/07/2019\"></Lodged>
+        \r\n<Property org_value=\"58W Fitzroy Street WALCHA 2354\"></Property> \r\n<Applicant
+        org_value=\"Mr A J Dark\"></Applicant> \r\n<AppYear org_value=\"2019\"></AppYear>
+        \r\n<AppNumber org_value=\"242\"></AppNumber> \r\n<PCA org_value=\"Walcha
+        Council\"></PCA> \r\n<Builder org_value=\"\"></Builder> \r\n<EstimatedCost
+        org_value=\"2500\"></EstimatedCost> \r\n<Officer org_value=\"Mrs L J Latham\"></Officer>
         \r\n<LEP org_value=\"\"></LEP> \r\n<BAS_PROTECTED></BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
         \r\n</row> \r\n<row> \r\n<id>731362190</id> \r\n<BAS_REF_VALUE>Applications:731362190</BAS_REF_VALUE>
         \r\n<AppType org_value=\"Development Application\"></AppType> \r\n<AccountNumber

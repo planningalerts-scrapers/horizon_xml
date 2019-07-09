@@ -31,13 +31,13 @@ http_interactions:
       Server:
       - Apache-Coyote/1.1
       Set-Cookie:
-      - JSESSIONID=11F9C63BA088A70700D24CF455BA2497; Path=/Horizon/; HttpOnly
+      - JSESSIONID=007161CB3136EC24751AD86D9B15160F; Path=/Horizon/; HttpOnly
       Content-Type:
       - text/html;charset=UTF-8
       Transfer-Encoding:
       - chunked
       Date:
-      - Tue, 09 Jul 2019 01:54:47 GMT
+      - Tue, 09 Jul 2019 06:36:35 GMT
     body:
       encoding: UTF-8
       string: "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">
@@ -242,7 +242,7 @@ http_interactions:
   recorded_at: Tue, 14 May 2019 14:00:00 GMT
 - request:
     method: get
-    uri: http://myhorizon.solorient.com.au/Horizon/urlRequest.aw?actionType=run_query_action&pageSize=500&query_name=SubmittedThisMonth&query_string=FIND%20Applications%20WHERE%20MONTH(Applications.Lodged)=CURRENT_MONTH%20AND%20YEAR(Applications.Lodged)=CURRENT_YEAR%20ORDER%20BY%20Applications.AppYear%20DESC,Applications.AppNumber%20DESC&skip=0&start=0&take=50
+    uri: http://myhorizon.solorient.com.au/Horizon/urlRequest.aw?actionType=run_query_action&pageSize=500&query_name=SubmittedThisMonth&query_string=FIND%20Applications%20WHERE%20MONTH(Applications.Lodged)=CURRENT_MONTH%20AND%20YEAR(Applications.Lodged)=CURRENT_YEAR%20ORDER%20BY%20Applications.Lodged%20DESC&skip=0&start=0&take=50
     body:
       encoding: US-ASCII
       string: ''
@@ -258,7 +258,7 @@ http_interactions:
       Accept-Language:
       - en-us,en;q=0.5
       Cookie:
-      - JSESSIONID=11F9C63BA088A70700D24CF455BA2497
+      - JSESSIONID=007161CB3136EC24751AD86D9B15160F
       Host:
       - myhorizon.solorient.com.au
       Connection:
@@ -279,21 +279,21 @@ http_interactions:
       Transfer-Encoding:
       - chunked
       Date:
-      - Tue, 09 Jul 2019 01:54:47 GMT
+      - Tue, 09 Jul 2019 06:36:35 GMT
     body:
       encoding: UTF-8
       string: "<?xml version='1.0' encoding='UTF-8' ?> \r\n<root> \r\n<run_query_action_return>
         \r\n<run_query_action_success> \r\n<dataset> \r\n<total>6</total> \r\n<row>
-        \r\n<id>731314488</id> \r\n<BAS_REF_VALUE>Applications:731314488</BAS_REF_VALUE>
-        \r\n<AppType org_value=\"Construction Certificate\"></AppType> \r\n<AccountNumber
-        org_value=\"CC 2019/63.1\"></AccountNumber> \r\n<Description org_value=\"New
-        Building Residential Dwelling\"></Description> \r\n<Lodged org_value=\"03/07/2019\"></Lodged>
-        \r\n<Property org_value=\"Killara Road COWRA 2794\"></Property> \r\n<Applicant
-        org_value=\"Craftsman Homes\"></Applicant> \r\n<AppYear org_value=\"2019\"></AppYear>
-        \r\n<AppNumber org_value=\"63\"></AppNumber> \r\n<PCA org_value=\"Cowra Shire
-        Council\"></PCA> \r\n<Builder org_value=\"\"></Builder> \r\n<EstimatedCost
-        org_value=\"478000\"></EstimatedCost> \r\n<Officer org_value=\"K J Alberry\"></Officer>
-        \r\n<LEP org_value=\"\"></LEP> \r\n<BAS_PROTECTED></BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
+        \r\n<id>731314490</id> \r\n<BAS_REF_VALUE>Applications:731314490</BAS_REF_VALUE>
+        \r\n<AppType org_value=\"Fire Safety Schedule\"></AppType> \r\n<AccountNumber
+        org_value=\"FS 2018/50.1\"></AccountNumber> \r\n<Description org_value=\"Alterations
+        &amp; additions to Council depot &amp; demolition of existing\"></Description>
+        \r\n<Lodged org_value=\"08/07/2019\"></Lodged> \r\n<Property org_value=\"Young
+        Road COWRA 2794\"></Property> \r\n<Applicant org_value=\"Cowra Shire Council\"></Applicant>
+        \r\n<AppYear org_value=\"2018\"></AppYear> \r\n<AppNumber org_value=\"50\"></AppNumber>
+        \r\n<PCA org_value=\"Cowra Shire Council\"></PCA> \r\n<Builder org_value=\"\"></Builder>
+        \r\n<EstimatedCost org_value=\"518683\"></EstimatedCost> \r\n<Officer org_value=\"L
+        J Sheehan\"></Officer> \r\n<LEP org_value=\"\"></LEP> \r\n<BAS_PROTECTED></BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
         \r\n</row> \r\n<row> \r\n<id>730253762</id> \r\n<BAS_REF_VALUE>Applications:730253762</BAS_REF_VALUE>
         \r\n<AppType org_value=\"Development Applications\"></AppType> \r\n<AccountNumber
         org_value=\"DA 2019/63.1\"></AccountNumber> \r\n<Description org_value=\"New
@@ -304,15 +304,15 @@ http_interactions:
         Council\"></PCA> \r\n<Builder org_value=\"\"></Builder> \r\n<EstimatedCost
         org_value=\"478000\"></EstimatedCost> \r\n<Officer org_value=\"K J Alberry\"></Officer>
         \r\n<LEP org_value=\"\"></LEP> \r\n<BAS_PROTECTED></BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
-        \r\n</row> \r\n<row> \r\n<id>729728600</id> \r\n<BAS_REF_VALUE>Applications:729728600</BAS_REF_VALUE>
-        \r\n<AppType org_value=\"Development Applications\"></AppType> \r\n<AccountNumber
-        org_value=\"DA 2019/62.1\"></AccountNumber> \r\n<Description org_value=\"New
-        Building Residential Pergola/Awning/Patio\"></Description> \r\n<Lodged org_value=\"03/07/2019\"></Lodged>
-        \r\n<Property org_value=\"12 Casuarina Close COWRA 2794\"></Property> \r\n<Applicant
-        org_value=\"P B Newham and K A Newham\"></Applicant> \r\n<AppYear org_value=\"2019\"></AppYear>
-        \r\n<AppNumber org_value=\"62\"></AppNumber> \r\n<PCA org_value=\"Cowra Shire
+        \r\n</row> \r\n<row> \r\n<id>731314488</id> \r\n<BAS_REF_VALUE>Applications:731314488</BAS_REF_VALUE>
+        \r\n<AppType org_value=\"Construction Certificate\"></AppType> \r\n<AccountNumber
+        org_value=\"CC 2019/63.1\"></AccountNumber> \r\n<Description org_value=\"New
+        Building Residential Dwelling\"></Description> \r\n<Lodged org_value=\"03/07/2019\"></Lodged>
+        \r\n<Property org_value=\"Killara Road COWRA 2794\"></Property> \r\n<Applicant
+        org_value=\"Craftsman Homes\"></Applicant> \r\n<AppYear org_value=\"2019\"></AppYear>
+        \r\n<AppNumber org_value=\"63\"></AppNumber> \r\n<PCA org_value=\"Cowra Shire
         Council\"></PCA> \r\n<Builder org_value=\"\"></Builder> \r\n<EstimatedCost
-        org_value=\"5000\"></EstimatedCost> \r\n<Officer org_value=\"K J Alberry\"></Officer>
+        org_value=\"478000\"></EstimatedCost> \r\n<Officer org_value=\"K J Alberry\"></Officer>
         \r\n<LEP org_value=\"\"></LEP> \r\n<BAS_PROTECTED></BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
         \r\n</row> \r\n<row> \r\n<id>729728599</id> \r\n<BAS_REF_VALUE>Applications:729728599</BAS_REF_VALUE>
         \r\n<AppType org_value=\"Development Applications\"></AppType> \r\n<AccountNumber
@@ -324,6 +324,16 @@ http_interactions:
         Council\"></PCA> \r\n<Builder org_value=\"\"></Builder> \r\n<EstimatedCost
         org_value=\"4445\"></EstimatedCost> \r\n<Officer org_value=\"K J Alberry\"></Officer>
         \r\n<LEP org_value=\"\"></LEP> \r\n<BAS_PROTECTED></BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
+        \r\n</row> \r\n<row> \r\n<id>729728600</id> \r\n<BAS_REF_VALUE>Applications:729728600</BAS_REF_VALUE>
+        \r\n<AppType org_value=\"Development Applications\"></AppType> \r\n<AccountNumber
+        org_value=\"DA 2019/62.1\"></AccountNumber> \r\n<Description org_value=\"New
+        Building Residential Pergola/Awning/Patio\"></Description> \r\n<Lodged org_value=\"03/07/2019\"></Lodged>
+        \r\n<Property org_value=\"12 Casuarina Close COWRA 2794\"></Property> \r\n<Applicant
+        org_value=\"P B Newham and K A Newham\"></Applicant> \r\n<AppYear org_value=\"2019\"></AppYear>
+        \r\n<AppNumber org_value=\"62\"></AppNumber> \r\n<PCA org_value=\"Cowra Shire
+        Council\"></PCA> \r\n<Builder org_value=\"\"></Builder> \r\n<EstimatedCost
+        org_value=\"5000\"></EstimatedCost> \r\n<Officer org_value=\"K J Alberry\"></Officer>
+        \r\n<LEP org_value=\"\"></LEP> \r\n<BAS_PROTECTED></BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
         \r\n</row> \r\n<row> \r\n<id>730778466</id> \r\n<BAS_REF_VALUE>Applications:730778466</BAS_REF_VALUE>
         \r\n<AppType org_value=\"Construction Certificate\"></AppType> \r\n<AccountNumber
         org_value=\"CC 2019/61.1\"></AccountNumber> \r\n<Description org_value=\"New
@@ -334,16 +344,6 @@ http_interactions:
         Council\"></PCA> \r\n<Builder org_value=\"\"></Builder> \r\n<EstimatedCost
         org_value=\"4445\"></EstimatedCost> \r\n<Officer org_value=\"K J Alberry\"></Officer>
         \r\n<LEP org_value=\"\"></LEP> \r\n<BAS_PROTECTED></BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
-        \r\n</row> \r\n<row> \r\n<id>731314490</id> \r\n<BAS_REF_VALUE>Applications:731314490</BAS_REF_VALUE>
-        \r\n<AppType org_value=\"Fire Safety Schedule\"></AppType> \r\n<AccountNumber
-        org_value=\"FS 2018/50.1\"></AccountNumber> \r\n<Description org_value=\"Alterations
-        &amp; additions to Council depot &amp; demolition of existing\"></Description>
-        \r\n<Lodged org_value=\"08/07/2019\"></Lodged> \r\n<Property org_value=\"Young
-        Road COWRA 2794\"></Property> \r\n<Applicant org_value=\"Cowra Shire Council\"></Applicant>
-        \r\n<AppYear org_value=\"2018\"></AppYear> \r\n<AppNumber org_value=\"50\"></AppNumber>
-        \r\n<PCA org_value=\"Cowra Shire Council\"></PCA> \r\n<Builder org_value=\"\"></Builder>
-        \r\n<EstimatedCost org_value=\"518683\"></EstimatedCost> \r\n<Officer org_value=\"L
-        J Sheehan\"></Officer> \r\n<LEP org_value=\"\"></LEP> \r\n<BAS_PROTECTED></BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
         \r\n</row> \r\n</dataset> \r\n</run_query_action_success> \r\n</run_query_action_return>
         \r\n</root> \r\n"
     http_version: 

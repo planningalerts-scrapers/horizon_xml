@@ -31,13 +31,13 @@ http_interactions:
       Server:
       - Apache-Coyote/1.1
       Set-Cookie:
-      - JSESSIONID=A2B9AAD93E2A24C37EF1619F7D5CED7F; Path=/Horizon/; HttpOnly
+      - JSESSIONID=421DA7351764B4E47141D9876E167986; Path=/Horizon/; HttpOnly
       Content-Type:
       - text/html;charset=UTF-8
       Transfer-Encoding:
       - chunked
       Date:
-      - Tue, 09 Jul 2019 00:46:41 GMT
+      - Tue, 09 Jul 2019 06:37:02 GMT
     body:
       encoding: UTF-8
       string: "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">
@@ -242,7 +242,7 @@ http_interactions:
   recorded_at: Tue, 14 May 2019 14:00:00 GMT
 - request:
     method: get
-    uri: http://myhorizon.solorient.com.au/Horizon/urlRequest.aw?actionType=run_query_action&pageSize=500&query_name=SubmittedThisMonth&query_string=FIND%20Applications%20WHERE%20MONTH(Applications.Lodged)=CURRENT_MONTH%20AND%20YEAR(Applications.Lodged)=CURRENT_YEAR%20ORDER%20BY%20Applications.AppYear%20DESC,Applications.AppNumber%20DESC&skip=0&start=0&take=50
+    uri: http://myhorizon.solorient.com.au/Horizon/urlRequest.aw?actionType=run_query_action&pageSize=500&query_name=SubmittedThisMonth&query_string=FIND%20Applications%20WHERE%20MONTH(Applications.Lodged)=CURRENT_MONTH%20AND%20YEAR(Applications.Lodged)=CURRENT_YEAR%20ORDER%20BY%20Applications.Lodged%20DESC&skip=0&start=0&take=50
     body:
       encoding: US-ASCII
       string: ''
@@ -258,7 +258,7 @@ http_interactions:
       Accept-Language:
       - en-us,en;q=0.5
       Cookie:
-      - JSESSIONID=A2B9AAD93E2A24C37EF1619F7D5CED7F
+      - JSESSIONID=421DA7351764B4E47141D9876E167986
       Host:
       - myhorizon.solorient.com.au
       Connection:
@@ -279,7 +279,7 @@ http_interactions:
       Transfer-Encoding:
       - chunked
       Date:
-      - Tue, 09 Jul 2019 00:46:41 GMT
+      - Tue, 09 Jul 2019 06:37:02 GMT
     body:
       encoding: UTF-8
       string: "<?xml version='1.0' encoding='UTF-8' ?> \r\n<root> \r\n<run_query_action_return>
@@ -294,16 +294,16 @@ http_interactions:
         Council\"></PCA> \r\n<Builder org_value=\"\"></Builder> \r\n<EstimatedCost
         org_value=\"176700\"></EstimatedCost> \r\n<Officer org_value=\"Mr B J Hayes\"></Officer>
         \r\n<LEP org_value=\"\"></LEP> \r\n<BAS_PROTECTED></BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
-        \r\n</row> \r\n<row> \r\n<id>729569959</id> \r\n<BAS_REF_VALUE>Applications:729569959</BAS_REF_VALUE>
-        \r\n<AppType org_value=\"Development Applications\"></AppType> \r\n<AccountNumber
-        org_value=\"DA2019/22.1\"></AccountNumber> \r\n<Description org_value=\"Dwelling\"></Description>
-        \r\n<Lodged org_value=\"01/07/2019\"></Lodged> \r\n<Property org_value=\"30
-        Stan McCabe Drive GRENFELL 2810\"></Property> \r\n<Applicant org_value=\"Andys
-        Design &amp; Drafting\"></Applicant> \r\n<AppYear org_value=\"2019\"></AppYear>
-        \r\n<AppNumber org_value=\"22\"></AppNumber> \r\n<PCA org_value=\"Weddin Shire
-        Council\"></PCA> \r\n<Builder org_value=\"\"></Builder> \r\n<EstimatedCost
-        org_value=\"233940\"></EstimatedCost> \r\n<Officer org_value=\"Mr B J Hayes\"></Officer>
-        \r\n<LEP org_value=\"\"></LEP> \r\n<BAS_PROTECTED></BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
+        \r\n</row> \r\n<row> \r\n<id>729569961</id> \r\n<BAS_REF_VALUE>Applications:729569961</BAS_REF_VALUE>
+        \r\n<AppType org_value=\"Occupation Certificate\"></AppType> \r\n<AccountNumber
+        org_value=\"OC2019/11.1\"></AccountNumber> \r\n<Description org_value=\"Primary
+        and Secondary Dwelling + Shed\"></Description> \r\n<Lodged org_value=\"02/07/2019\"></Lodged>
+        \r\n<Property org_value=\"4951 Henry Lawson Way GRENFELL 2810\"></Property>
+        \r\n<Applicant org_value=\"Andys Design &amp; Drafting\"></Applicant> \r\n<AppYear
+        org_value=\"2019\"></AppYear> \r\n<AppNumber org_value=\"11\"></AppNumber>
+        \r\n<PCA org_value=\"Weddin Shire Council\"></PCA> \r\n<Builder org_value=\"\"></Builder>
+        \r\n<EstimatedCost org_value=\"597700\"></EstimatedCost> \r\n<Officer org_value=\"Mr
+        B J Hayes\"></Officer> \r\n<LEP org_value=\"\"></LEP> \r\n<BAS_PROTECTED></BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
         \r\n</row> \r\n<row> \r\n<id>729045154</id> \r\n<BAS_REF_VALUE>Applications:729045154</BAS_REF_VALUE>
         \r\n<AppType org_value=\"Development Applications\"></AppType> \r\n<AccountNumber
         org_value=\"DA2019/21.1\"></AccountNumber> \r\n<Description org_value=\"New
@@ -334,20 +334,20 @@ http_interactions:
         \r\n<Builder org_value=\"\"></Builder> \r\n<EstimatedCost org_value=\"34760\"></EstimatedCost>
         \r\n<Officer org_value=\"Mr B J Hayes\"></Officer> \r\n<LEP org_value=\"\"></LEP>
         \r\n<BAS_PROTECTED></BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
+        \r\n</row> \r\n<row> \r\n<id>729569959</id> \r\n<BAS_REF_VALUE>Applications:729569959</BAS_REF_VALUE>
+        \r\n<AppType org_value=\"Development Applications\"></AppType> \r\n<AccountNumber
+        org_value=\"DA2019/22.1\"></AccountNumber> \r\n<Description org_value=\"Dwelling\"></Description>
+        \r\n<Lodged org_value=\"01/07/2019\"></Lodged> \r\n<Property org_value=\"30
+        Stan McCabe Drive GRENFELL 2810\"></Property> \r\n<Applicant org_value=\"Andys
+        Design &amp; Drafting\"></Applicant> \r\n<AppYear org_value=\"2019\"></AppYear>
+        \r\n<AppNumber org_value=\"22\"></AppNumber> \r\n<PCA org_value=\"Weddin Shire
+        Council\"></PCA> \r\n<Builder org_value=\"\"></Builder> \r\n<EstimatedCost
+        org_value=\"233940\"></EstimatedCost> \r\n<Officer org_value=\"Mr B J Hayes\"></Officer>
+        \r\n<LEP org_value=\"\"></LEP> \r\n<BAS_PROTECTED></BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
         \r\n</row> \r\n<row> \r\n<id>729569960</id> \r\n<BAS_REF_VALUE>Applications:729569960</BAS_REF_VALUE>
         \r\n<AppType org_value=\"Construction Certificate\"></AppType> \r\n<AccountNumber
         org_value=\"CC2019/11.1\"></AccountNumber> \r\n<Description org_value=\"Primary
         and Secondary Dwelling + Shed\"></Description> \r\n<Lodged org_value=\"01/07/2019\"></Lodged>
-        \r\n<Property org_value=\"4951 Henry Lawson Way GRENFELL 2810\"></Property>
-        \r\n<Applicant org_value=\"Andys Design &amp; Drafting\"></Applicant> \r\n<AppYear
-        org_value=\"2019\"></AppYear> \r\n<AppNumber org_value=\"11\"></AppNumber>
-        \r\n<PCA org_value=\"Weddin Shire Council\"></PCA> \r\n<Builder org_value=\"\"></Builder>
-        \r\n<EstimatedCost org_value=\"597700\"></EstimatedCost> \r\n<Officer org_value=\"Mr
-        B J Hayes\"></Officer> \r\n<LEP org_value=\"\"></LEP> \r\n<BAS_PROTECTED></BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
-        \r\n</row> \r\n<row> \r\n<id>729569961</id> \r\n<BAS_REF_VALUE>Applications:729569961</BAS_REF_VALUE>
-        \r\n<AppType org_value=\"Occupation Certificate\"></AppType> \r\n<AccountNumber
-        org_value=\"OC2019/11.1\"></AccountNumber> \r\n<Description org_value=\"Primary
-        and Secondary Dwelling + Shed\"></Description> \r\n<Lodged org_value=\"02/07/2019\"></Lodged>
         \r\n<Property org_value=\"4951 Henry Lawson Way GRENFELL 2810\"></Property>
         \r\n<Applicant org_value=\"Andys Design &amp; Drafting\"></Applicant> \r\n<AppYear
         org_value=\"2019\"></AppYear> \r\n<AppNumber org_value=\"11\"></AppNumber>

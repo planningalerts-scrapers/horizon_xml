@@ -69,8 +69,7 @@ module HorizonXml
       "MONTH(Applications.Lodged)=CURRENT_MONTH AND " \
       "YEAR(Applications.Lodged)=CURRENT_YEAR " \
       "ORDER BY " \
-      "Applications.AppYear DESC," \
-      "Applications.AppNumber DESC"
+      "Applications.Lodged DESC"
   end
 
   def self.thismonth_query2
