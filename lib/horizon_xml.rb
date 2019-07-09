@@ -54,6 +54,70 @@ class HorizonXml
   attr_accessor :domain
   attr_accessor :base_url
 
+  def self.lastmonth_url(base_url, start, page_size)
+    "#{base_url}urlRequest.aw?" \
+               "actionType=run_query_action&" \
+               "query_string=FIND+Applications+" \
+               "WHERE+MONTH(Applications.Lodged-1)%3DSystemSettings.SearchMonthPrevious+AND+" \
+               "YEAR(Applications.Lodged)%3DSystemSettings.SearchYear+AND+" \
+               "Applications.CanDisclose%3D%27Yes%27+" \
+               "ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC&" \
+               "query_name=SubmittedLastMonth&" \
+               "take=50&" \
+               "skip=0&" \
+               "start=#{start}&" \
+               "pageSize=#{page_size}"
+  end
+
+  def self.thismonth_url(base_url, start, page_size)
+    query_string = "FIND+Applications+WHERE+" \
+                   "MONTH(Applications.Lodged)%3DCURRENT_MONTH+AND+" \
+                   "YEAR(Applications.Lodged)%3DCURRENT_YEAR+" \
+                   "ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC"
+    "#{base_url}urlRequest.aw?" \
+      "actionType=run_query_action&" \
+      "query_string=#{query_string}&" \
+      "query_name=SubmittedThisMonth&" \
+      "take=50&" \
+      "skip=0&" \
+      "start=#{start}&" \
+      "pageSize=#{page_size}"
+  end
+
+  def self.year_url(base_url, period, start, page_size)
+    "#{base_url}urlRequest.aw?" \
+      "actionType=run_query_action&" \
+      "query_string=FIND+Applications+" \
+      "WHERE+" \
+      "Applications.AppYear%3D#{period}+AND+" \
+      "Applications.CanDisclose%3D%27Yes%27+" \
+      "ORDER+BY+" \
+      "Applications.Lodged+DESC%2C" \
+      "Applications.AppYear+DESC%2C" \
+      "Applications.AppNumber+DESC&" \
+      "query_name=Applications_List_Search&" \
+      "take=50&" \
+      "skip=0&" \
+      "start=#{start}&" \
+      "pageSize=#{page_size}"
+  end
+
+  def self.thisweek_url(base_url, start, page_size)
+    "#{base_url}urlRequest.aw?" \
+      "actionType=run_query_action&" \
+      "query_string=FIND+Applications+" \
+      "WHERE+" \
+      "WEEK(Applications.Lodged)%3DCURRENT_WEEK-1+AND+" \
+      "YEAR(Applications.Lodged)%3DCURRENT_YEAR+AND+" \
+      "Applications.CanDisclose%3D%27Yes%27+" \
+      "ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC&" \
+      "query_name=SubmittedThisWeek&" \
+      "take=50&" \
+      "skip=0&" \
+      "start=#{start}&" \
+      "pageSize=#{page_size}"
+  end
+
   def records
     @agent ||= Mechanize.new
 
@@ -61,65 +125,17 @@ class HorizonXml
     case period
     when "lastmonth"
       @period = "lastmonth"
-      @xml_url = "#{@base_url}urlRequest.aw?" \
-                 "actionType=run_query_action&" \
-                 "query_string=FIND+Applications+" \
-                 "WHERE+MONTH(Applications.Lodged-1)%3DSystemSettings.SearchMonthPrevious+AND+" \
-                 "YEAR(Applications.Lodged)%3DSystemSettings.SearchYear+AND+" \
-                 "Applications.CanDisclose%3D%27Yes%27+" \
-                 "ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC&" \
-                 "query_name=SubmittedLastMonth&" \
-                 "take=50&" \
-                 "skip=0&" \
-                 "start=#{@start}&" \
-                 "pageSize=#{@pagesize}"
+      @xml_url = HorizonXml.lastmonth_url(@base_url, @start, @pagesize)
     when "thismonth"
       @period = "thismonth"
-      query_string = "FIND+Applications+WHERE+" \
-                     "MONTH(Applications.Lodged)%3DCURRENT_MONTH+AND+" \
-                     "YEAR(Applications.Lodged)%3DCURRENT_YEAR+" \
-                     "ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC"
-      @xml_url = "#{@base_url}urlRequest.aw?" \
-                 "actionType=run_query_action&" \
-                 "query_string=#{query_string}&" \
-                 "query_name=SubmittedThisMonth&" \
-                 "take=50&" \
-                 "skip=0&" \
-                 "start=#{@start}&" \
-                 "pageSize=#{@pagesize}"
+      @xml_url = HorizonXml.thismonth_url(@base_url, @start, @pagesize)
     else
       if period.to_i >= 1960
         @period = period.to_i.to_s
-        @xml_url = "#{@base_url}urlRequest.aw?" \
-                   "actionType=run_query_action&" \
-                   "query_string=FIND+Applications+" \
-                   "WHERE+" \
-                   "Applications.AppYear%3D#{period}+AND+" \
-                   "Applications.CanDisclose%3D%27Yes%27+" \
-                   "ORDER+BY+" \
-                   "Applications.Lodged+DESC%2C" \
-                   "Applications.AppYear+DESC%2C" \
-                   "Applications.AppNumber+DESC&" \
-                   "query_name=Applications_List_Search&" \
-                   "take=50&" \
-                   "skip=0&" \
-                   "start=#{@start}&" \
-                   "pageSize=#{@pagesize}"
+        @xml_url = HorizonXml.year_url(@base_url, period, @start, @pagesize)
       else
         @period = "thisweek"
-        @xml_url = "#{@base_url}urlRequest.aw?" \
-                   "actionType=run_query_action&" \
-                   "query_string=FIND+Applications+" \
-                   "WHERE+" \
-                   "WEEK(Applications.Lodged)%3DCURRENT_WEEK-1+AND+" \
-                   "YEAR(Applications.Lodged)%3DCURRENT_YEAR+AND+" \
-                   "Applications.CanDisclose%3D%27Yes%27+" \
-                   "ORDER+BY+Applications.AppYear+DESC%2CApplications.AppNumber+DESC&" \
-                   "query_name=SubmittedThisWeek&" \
-                   "take=50&" \
-                   "skip=0&" \
-                   "start=#{@start}&" \
-                   "pageSize=#{@pagesize}"
+        @xml_url = HorizonXml.thisweek_url(@base_url, @start, @pagesize)
       end
     end
 
