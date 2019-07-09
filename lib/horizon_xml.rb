@@ -51,8 +51,7 @@ class HorizonXml
     end
   end
 
-  def initialize(debug = false)
-    @debug        = debug
+  def initialize
     @executed     = false
     @allow_blanks = false
     @period       = nil
@@ -167,13 +166,6 @@ class HorizonXml
     if check_params
       @records = []
 
-      if @debug
-        puts "Scraping for " + @period
-        puts "Base URL  : " + @base_url
-        puts "Cookie URL: " + @cookie_url
-        puts "XML URL   : " + @xml_url
-      end
-
       @agent.get(@cookie_url)
       page = @agent.get(@xml_url)
 
@@ -185,8 +177,6 @@ class HorizonXml
       pages = total / @pagesize
 
       (0..pages).each do |i|
-        puts "checking page " + (i + 1).to_s + " of " + (pages + 1).to_s if @debug
-
         if i.positive?
           @start = i * @pagesize
           setPeriod(@period)
@@ -216,8 +206,6 @@ class HorizonXml
             "date_received" => DateTime.parse(app.xpath("Lodged")
                                .attribute("org_value").text).to_date.to_s
           }
-
-          p record if @debug
 
           # adding record to records array
           if @allow_blanks
