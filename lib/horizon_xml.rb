@@ -3,13 +3,6 @@
 require "mechanize"
 require "scraperwiki"
 
-# Nasty monkeypatch
-class Hash
-  def blank?
-    values.any? { |v| v.nil? || v.empty? }
-  end
-end
-
 # Scrape horizon (solorient) site
 module HorizonXml
   AUTHORITIES = {
@@ -212,8 +205,6 @@ module HorizonXml
       record["comment_url"]       = comment_url
       record["date_scraped"]      = Date.today.to_s
       record["date_received"]     = Date.strptime(r.at("Lodged")["org_value"], "%d/%m/%Y").to_s
-
-      next if record.blank?
 
       puts "Saving record " + record["council_reference"] + ", " + record["address"]
       ScraperWiki.save_sqlite(["council_reference"], record)
