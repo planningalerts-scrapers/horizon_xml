@@ -185,14 +185,15 @@ module HorizonXml
 
   def self.scrape_and_save_maitland
     base_url = "https://myhorizon.maitland.nsw.gov.au/Horizon/logonOp.aw?e=FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxERQgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home"
-    query_string = "FIND+Applications+" \
-                   "WHERE+Applications.ApplicationTypeID.IsAvailableOnline%3D%27Yes%27+AND+" \
-                   "Applications.CanDisclose%3D%27Yes%27+AND+" \
-                   "NOT(Applications.StatusName+IN+%27Pending%27%2C+%27Cancelled%27)+AND+" \
-                   "MONTH(Applications.Lodged)%3DCURRENT_MONTH+AND+" \
-                   "YEAR(Applications.Lodged)%3DCURRENT_YEAR+AND+" \
-                   "Application.ApplicationTypeID.Classification%3D%27Application%27+" \
-                   "ORDER+BY+Applications.Lodged+DESC"
+    query_string = "FIND Applications " \
+                   "WHERE Applications.ApplicationTypeID.IsAvailableOnline='Yes' AND " \
+                   "Applications.CanDisclose='Yes' AND " \
+                   "NOT(Applications.StatusName IN 'Pending', 'Cancelled') AND " \
+                   "MONTH(Applications.Lodged)=CURRENT_MONTH AND " \
+                   "YEAR(Applications.Lodged)=CURRENT_YEAR AND " \
+                   "Application.ApplicationTypeID.Classification='Application' " \
+                   "ORDER BY Applications.Lodged DESC"
+    query_string = query_string.gsub(" ", "+").gsub("=", "%3D").gsub(",", "%2C").gsub("'", "%27")
     data_url = "https://myhorizon.maitland.nsw.gov.au/Horizon/urlRequest.aw?" \
                "actionType=run_query_action&" \
                "query_string=#{query_string}&" \
