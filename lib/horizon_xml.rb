@@ -184,10 +184,23 @@ module HorizonXml
   end
 
   def self.scrape_and_save_maitland
-    base_url  = "https://myhorizon.maitland.nsw.gov.au/Horizon/logonOp.aw?e=FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxERQgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home"
-    thismonth = "https://myhorizon.maitland.nsw.gov.au/Horizon/urlRequest.aw?actionType=run_query_action&query_string=FIND+Applications+WHERE+Applications.ApplicationTypeID.IsAvailableOnline%3D%27Yes%27+AND+Applications.CanDisclose%3D%27Yes%27+AND+NOT(Applications.StatusName+IN+%27Pending%27%2C+%27Cancelled%27)+AND+MONTH(Applications.Lodged)%3DCURRENT_MONTH+AND+YEAR(Applications.Lodged)%3DCURRENT_YEAR+AND+Application.ApplicationTypeID.Classification%3D%27Application%27+ORDER+BY+Applications.Lodged+DESC&query_name=Application_LodgedThisMonth&take=100&skip=0&start=0&pageSize=100"
-
-    data_url = thismonth
+    base_url = "https://myhorizon.maitland.nsw.gov.au/Horizon/logonOp.aw?e=FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxERQgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home"
+    query_string = "FIND+Applications+" \
+                   "WHERE+Applications.ApplicationTypeID.IsAvailableOnline%3D%27Yes%27+AND+" \
+                   "Applications.CanDisclose%3D%27Yes%27+AND+" \
+                   "NOT(Applications.StatusName+IN+%27Pending%27%2C+%27Cancelled%27)+AND+" \
+                   "MONTH(Applications.Lodged)%3DCURRENT_MONTH+AND+" \
+                   "YEAR(Applications.Lodged)%3DCURRENT_YEAR+AND+" \
+                   "Application.ApplicationTypeID.Classification%3D%27Application%27+" \
+                   "ORDER+BY+Applications.Lodged+DESC"
+    data_url = "https://myhorizon.maitland.nsw.gov.au/Horizon/urlRequest.aw?" \
+               "actionType=run_query_action&" \
+               "query_string=#{query_string}&" \
+               "query_name=Application_LodgedThisMonth&" \
+               "take=100&" \
+               "skip=0&" \
+               "start=0&" \
+               "pageSize=100"
 
     agent = Mechanize.new
     agent.get(base_url)
