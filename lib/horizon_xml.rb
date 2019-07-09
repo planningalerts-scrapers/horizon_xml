@@ -19,24 +19,20 @@ class HorizonXml
     collector.base_url = "http://myhorizon.solorient.com.au/Horizon/"
 
     if authority == :cowra
-      collector.domain      = "horizondap_cowra"
-      collector.period      = "thismonth"
+      collector.domain = "horizondap_cowra"
     elsif authority == :liverpool_plains
-      collector.domain      = "horizondap_lpsc"
-      collector.period      = "thismonth"
+      collector.domain = "horizondap_lpsc"
     elsif authority == :uralla
-      collector.domain      = "horizondap_uralla"
-      collector.period      = "thismonth"
+      collector.domain = "horizondap_uralla"
     elsif authority == :walcha
-      collector.domain      = "horizondap_walcha"
-      collector.period      = "thismonth"
+      collector.domain = "horizondap_walcha"
     elsif authority == :weddin
-      collector.domain      = "horizondap"
-      collector.period      = "thismonth"
+      collector.domain = "horizondap"
     else
       raise "Unexpected authority: #{authority}"
     end
 
+    collector.period = "thismonth"
     collector.records.each do |record|
       puts "Saving record " + record["council_reference"] + ", " + record["address"]
       ScraperWiki.save_sqlite(["council_reference"], record)
