@@ -122,6 +122,18 @@ module HorizonXml
     }.to_query
   end
 
+  def self.thismonth_url2(base_url)
+    "#{base_url}urlRequest.aw?" + {
+      "actionType" => "run_query_action",
+      "query_string" => thismonth_query2,
+      "query_name" => "Application_LodgedThisMonth",
+      "take" => 100,
+      "skip" => 0,
+      "start" => 0,
+      "pageSize" => 100
+    }.to_query
+  end
+
   def self.year_url(base_url, period, start, page_size)
     "#{base_url}urlRequest.aw?" + {
       "actionType" => "run_query_action",
@@ -219,19 +231,9 @@ module HorizonXml
                 "FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxER" \
                 "QgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home"
 
-    data_url = "#{base_url}urlRequest.aw?" + {
-      "actionType" => "run_query_action",
-      "query_string" => thismonth_query2,
-      "query_name" => "Application_LodgedThisMonth",
-      "take" => 100,
-      "skip" => 0,
-      "start" => 0,
-      "pageSize" => 100
-    }.to_query
-
     agent = Mechanize.new
     agent.get(start_url)
-    page = agent.get(data_url)
+    page = agent.get(thismonth_url2(base_url))
     records = page.search("//row")
 
     records.each do |r|
