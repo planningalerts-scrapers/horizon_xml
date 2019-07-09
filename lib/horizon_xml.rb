@@ -121,6 +121,38 @@ module HorizonXml
     end
   end
 
+  def self.extract_total(page)
+    xml = Nokogiri::XML(page.body)
+    xml.xpath("//run_query_action_return/run_query_action_success/dataset/total").text.to_i
+  end
+
+  def self.scrape_page(page, cookie_url)
+    xml = Nokogiri::XML(page.body)
+    xml.xpath("//run_query_action_return/run_query_action_success/dataset/row").each do |app|
+      council_reference = unless app.xpath("AccountNumber").attribute("org_value").text.empty?
+                            app.xpath("AccountNumber").attribute("org_value").text.strip
+                          end
+      # TODO: Make state configurable
+      address = unless app.xpath("Property").attribute("org_value").text.empty?
+                  (app.xpath("Property").attribute("org_value").text + " NSW").strip
+                end
+
+      description = unless app.xpath("Description").attribute("org_value").text.empty?
+                      app.xpath("Description").attribute("org_value").text.strip
+                    end
+
+      yield(
+        "council_reference" => council_reference,
+        "address" => address,
+        "description" => description,
+        "info_url" => cookie_url,
+        "date_scraped" => Date.today.to_s,
+        "date_received" => DateTime.parse(app.xpath("Lodged")
+                           .attribute("org_value").text).to_date.to_s
+      )
+    end
+  end
+
   def self.scrape_url(base_url, domain, period)
     page_size = 500
     start = 0
@@ -131,16 +163,12 @@ module HorizonXml
 
     cookie_url = base_url + "logonGuest.aw?domain=" + domain
 
-    info_url ||= cookie_url
-
     agent.get(cookie_url)
     page = agent.get(xml_url)
 
     xml = Nokogiri::XML(page.body)
 
-    total = xml.xpath("//run_query_action_return/run_query_action_success/dataset/total")
-               .text
-               .to_i
+    total = extract_total(page)
     pages = total / page_size
 
     (0..pages).each do |i|
@@ -151,28 +179,8 @@ module HorizonXml
         xml  = Nokogiri::XML(page.body)
       end
 
-      xml.xpath("//run_query_action_return/run_query_action_success/dataset/row").each do |app|
-        council_reference = unless app.xpath("AccountNumber").attribute("org_value").text.empty?
-                              app.xpath("AccountNumber").attribute("org_value").text.strip
-                            end
-        # TODO: Make state configurable
-        address = unless app.xpath("Property").attribute("org_value").text.empty?
-                    (app.xpath("Property").attribute("org_value").text + " NSW").strip
-                  end
-
-        description = unless app.xpath("Description").attribute("org_value").text.empty?
-                        app.xpath("Description").attribute("org_value").text.strip
-                      end
-
-        yield(
-          "council_reference" => council_reference,
-          "address" => address,
-          "description" => description,
-          "info_url" => info_url,
-          "date_scraped" => Date.today.to_s,
-          "date_received" => DateTime.parse(app.xpath("Lodged")
-                             .attribute("org_value").text).to_date.to_s
-        )
+      scrape_page(page, cookie_url) do |record|
+        yield record
       end
     end
   end
