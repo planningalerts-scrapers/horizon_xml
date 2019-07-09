@@ -4,7 +4,7 @@ require "mechanize"
 require "scraperwiki"
 
 # Scrape horizon (solorient) site
-class HorizonXml
+module HorizonXml
   AUTHORITIES = {
     cowra: {},
     # Can't yet test liverpool_plains because it doesn't return any data for this month
@@ -15,7 +15,6 @@ class HorizonXml
   }.freeze
 
   def self.scrape_and_save(authority)
-    collector = HorizonXml.new
     base_url = "http://myhorizon.solorient.com.au/Horizon/"
     period = "thismonth"
 
@@ -33,7 +32,7 @@ class HorizonXml
       raise "Unexpected authority: #{authority}"
     end
 
-    collector.records(base_url, domain, period).each do |record|
+    HorizonXml.records(base_url, domain, period).each do |record|
       save(record)
     end
   end
@@ -122,7 +121,7 @@ class HorizonXml
     end
   end
 
-  def records(base_url, domain, period)
+  def self.records(base_url, domain, period)
     page_size = 500
     start = 0
 
