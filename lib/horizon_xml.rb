@@ -164,7 +164,7 @@ module HorizonXml
                         app.xpath("Description").attribute("org_value").text.strip
                       end
 
-        record = {
+        yield(
           "council_reference" => council_reference,
           "address" => address,
           "description" => description,
@@ -172,9 +172,7 @@ module HorizonXml
           "date_scraped" => Date.today.to_s,
           "date_received" => DateTime.parse(app.xpath("Lodged")
                              .attribute("org_value").text).to_date.to_s
-        }
-
-        yield record
+        )
       end
     end
   end
