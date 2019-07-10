@@ -120,6 +120,7 @@ module HorizonXml
       council_reference = app.xpath("AccountNumber").attribute("org_value").text.strip
       address = app.xpath("Property").attribute("org_value").text.strip
       description = app.xpath("Description").attribute("org_value").text.strip
+      date_received = app.xpath("Lodged").attribute("org_value").text
 
       yield(
         "council_reference" => council_reference,
@@ -127,8 +128,8 @@ module HorizonXml
         "description" => description,
         "info_url" => info_url,
         "date_scraped" => Date.today.to_s,
-        "date_received" => DateTime.parse(app.xpath("Lodged")
-                           .attribute("org_value").text).to_date.to_s
+        # TODO: Parse date based on knowledge of form
+        "date_received" => DateTime.parse(date_received).to_date.to_s
       )
     end
   end
