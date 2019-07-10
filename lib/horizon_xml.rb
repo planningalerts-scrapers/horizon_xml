@@ -84,8 +84,8 @@ module HorizonXml
     }.to_query
   end
 
-  def self.thismonth_url(base_url, start, page_size)
-    base_url + query_url(
+  def self.thismonth_url(start, page_size)
+    query_url(
       query_string: thismonth_query,
       query_name: "SubmittedThisMonth",
       take: 50,
@@ -94,8 +94,8 @@ module HorizonXml
     )
   end
 
-  def self.thismonth_url2(base_url, start, page_size)
-    base_url + query_url(
+  def self.thismonth_url2(start, page_size)
+    query_url(
       query_string: thismonth_query2,
       query_name: "Application_LodgedThisMonth",
       take: 100,
@@ -146,12 +146,12 @@ module HorizonXml
     agent = Mechanize.new
 
     agent.get(start_url)
-    page = agent.get(thismonth_url(base_url, 0, page_size))
+    page = agent.get(thismonth_url(0, page_size))
 
     pages = extract_total(page) / page_size
 
     (0..pages).each do |i|
-      page = agent.get(thismonth_url(base_url, i * page_size, page_size)) if i.positive?
+      page = agent.get(thismonth_url(i * page_size, page_size)) if i.positive?
 
       scrape_page(page, start_url) do |record|
         record["address"] += " #{state}" if record["address"] && state
@@ -171,7 +171,7 @@ module HorizonXml
 
     agent = Mechanize.new
     agent.get(start_url)
-    page = agent.get(thismonth_url2(base_url, 0, page_size))
+    page = agent.get(thismonth_url2(0, page_size))
 
     scrape_page(page, info_url) do |record|
       save(record)
