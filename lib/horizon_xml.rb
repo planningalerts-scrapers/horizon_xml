@@ -71,8 +71,8 @@ module HorizonXml
     "Applications.Lodged DESC"
   end
 
-  def self.query_url(base_url:, query_string:, query_name:, take:, start:, page_size:)
-    "#{base_url}urlRequest.aw?" + {
+  def self.query_url(query_string:, query_name:, take:, start:, page_size:)
+    "urlRequest.aw?" + {
       "actionType" => "run_query_action",
       "query_string" => query_string,
       "query_name" => query_name,
@@ -84,8 +84,7 @@ module HorizonXml
   end
 
   def self.thismonth_url(base_url, start, page_size)
-    query_url(
-      base_url: base_url,
+    base_url + query_url(
       query_string: thismonth_query,
       query_name: "SubmittedThisMonth",
       take: 50,
@@ -95,8 +94,7 @@ module HorizonXml
   end
 
   def self.thismonth_url2(base_url)
-    query_url(
-      base_url: base_url,
+    base_url + query_url(
       query_string: thismonth_query2,
       query_name: "Application_LodgedThisMonth",
       take: 100,
