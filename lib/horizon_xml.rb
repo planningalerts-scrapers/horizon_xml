@@ -97,7 +97,7 @@ module HorizonXml
     query_url(
       query_string: thismonth_query2,
       query_name: "Application_LodgedThisMonth",
-      take: 100,
+      take: 50,
       start: start,
       page_size: page_size
     )

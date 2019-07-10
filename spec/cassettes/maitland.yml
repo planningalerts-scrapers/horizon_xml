@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx/1.14.2
       Date:
-      - Wed, 10 Jul 2019 01:45:44 GMT
+      - Wed, 10 Jul 2019 01:46:56 GMT
       Content-Type:
       - text/html;charset=UTF-8
       Transfer-Encoding:
@@ -43,7 +43,7 @@ http_interactions:
       Expires:
       - Thu, 01 Jan 1970 10:00:00 AEST
       Set-Cookie:
-      - JSESSIONID=3FF6E52100856368C75B31C09BF33A22; Path=/Horizon; Secure; HttpOnly
+      - JSESSIONID=1E440F06AAF0AE33E4FB5CCB7B6369E5; Path=/Horizon; Secure; HttpOnly
       Content-Encoding:
       - gzip
     body:
@@ -54,7 +54,7 @@ http_interactions:
   recorded_at: Tue, 14 May 2019 14:00:00 GMT
 - request:
     method: get
-    uri: https://myhorizon.maitland.nsw.gov.au/Horizon/urlRequest.aw?actionType=run_query_action&pageSize=100&query_name=Application_LodgedThisMonth&query_string=FIND%20Applications%20WHERE%20Applications.ApplicationTypeID.IsAvailableOnline=%27Yes%27%20AND%20Applications.CanDisclose=%27Yes%27%20AND%20NOT(Applications.StatusName%20IN%20%27Pending%27,%20%27Cancelled%27)%20AND%20MONTH(Applications.Lodged)=CURRENT_MONTH%20AND%20YEAR(Applications.Lodged)=CURRENT_YEAR%20AND%20Application.ApplicationTypeID.Classification=%27Application%27%20ORDER%20BY%20Applications.Lodged%20DESC&skip=0&start=0&take=100
+    uri: https://myhorizon.maitland.nsw.gov.au/Horizon/urlRequest.aw?actionType=run_query_action&pageSize=100&query_name=Application_LodgedThisMonth&query_string=FIND%20Applications%20WHERE%20Applications.ApplicationTypeID.IsAvailableOnline=%27Yes%27%20AND%20Applications.CanDisclose=%27Yes%27%20AND%20NOT(Applications.StatusName%20IN%20%27Pending%27,%20%27Cancelled%27)%20AND%20MONTH(Applications.Lodged)=CURRENT_MONTH%20AND%20YEAR(Applications.Lodged)=CURRENT_YEAR%20AND%20Application.ApplicationTypeID.Classification=%27Application%27%20ORDER%20BY%20Applications.Lodged%20DESC&skip=0&start=0&take=50
     body:
       encoding: US-ASCII
       string: ''
@@ -70,7 +70,7 @@ http_interactions:
       Accept-Language:
       - en-us,en;q=0.5
       Cookie:
-      - JSESSIONID=3FF6E52100856368C75B31C09BF33A22
+      - JSESSIONID=1E440F06AAF0AE33E4FB5CCB7B6369E5
       Host:
       - myhorizon.maitland.nsw.gov.au
       Referer:
@@ -87,7 +87,7 @@ http_interactions:
       Server:
       - nginx/1.14.2
       Date:
-      - Wed, 10 Jul 2019 01:46:16 GMT
+      - Wed, 10 Jul 2019 01:47:28 GMT
       Content-Type:
       - text/xml;charset=UTF-8
       Transfer-Encoding:
