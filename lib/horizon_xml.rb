@@ -120,13 +120,16 @@ module HorizonXml
   end
 
   def self.scrape_url(start_url:, page_size:, state: nil)
+    query_string = thismonth_query
+    query_name = "SubmittedThisMonth"
+
     agent = Mechanize.new
 
     agent.get(start_url)
     page = agent.get(
       query_url(
-        query_string: thismonth_query,
-        query_name: "SubmittedThisMonth",
+        query_string: query_string,
+        query_name: query_name,
         take: 50,
         start: 0,
         page_size: page_size
@@ -139,8 +142,8 @@ module HorizonXml
       if i.positive?
         page = agent.get(
           query_url(
-            query_string: thismonth_query,
-            query_name: "SubmittedThisMonth",
+            query_string: query_string,
+            query_name: query_name,
             take: 50,
             start: i * page_size,
             page_size: page_size
@@ -162,13 +165,15 @@ module HorizonXml
                 "FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxER" \
                 "QgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home"
     info_url = "https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html"
+    query_string = thismonth_query2
+    query_name = "Application_LodgedThisMonth"
 
     agent = Mechanize.new
     agent.get(start_url)
     page = agent.get(
       query_url(
-        query_string: thismonth_query2,
-        query_name: "Application_LodgedThisMonth",
+        query_string: query_string,
+        query_name: query_name,
         take: 50,
         start: 0,
         page_size: page_size
