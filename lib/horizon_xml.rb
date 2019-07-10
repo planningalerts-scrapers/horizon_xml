@@ -23,7 +23,17 @@ module HorizonXml
                     "FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxER" \
                     "QgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home",
         page_size: 100,
-        query_string: thismonth_query2,
+        query_string:
+          "FIND Applications " \
+          "WHERE " \
+          "Applications.ApplicationTypeID.IsAvailableOnline='Yes' AND " \
+          "Applications.CanDisclose='Yes' AND " \
+          "NOT(Applications.StatusName IN 'Pending', 'Cancelled') AND " \
+          "MONTH(Applications.Lodged)=CURRENT_MONTH AND " \
+          "YEAR(Applications.Lodged)=CURRENT_YEAR AND " \
+          "Application.ApplicationTypeID.Classification='Application' " \
+          "ORDER BY " \
+          "Applications.Lodged DESC",
         query_name: "Application_LodgedThisMonth"
       ) do |record|
         save(record)
@@ -77,28 +87,6 @@ module HorizonXml
     ScraperWiki.save_sqlite(["council_reference"], record)
   end
 
-  def self.thismonth_query
-    "FIND Applications " \
-    "WHERE " \
-    "MONTH(Applications.Lodged)=CURRENT_MONTH AND " \
-    "YEAR(Applications.Lodged)=CURRENT_YEAR " \
-    "ORDER BY " \
-    "Applications.Lodged DESC"
-  end
-
-  def self.thismonth_query2
-    "FIND Applications " \
-    "WHERE " \
-    "Applications.ApplicationTypeID.IsAvailableOnline='Yes' AND " \
-    "Applications.CanDisclose='Yes' AND " \
-    "NOT(Applications.StatusName IN 'Pending', 'Cancelled') AND " \
-    "MONTH(Applications.Lodged)=CURRENT_MONTH AND " \
-    "YEAR(Applications.Lodged)=CURRENT_YEAR AND " \
-    "Application.ApplicationTypeID.Classification='Application' " \
-    "ORDER BY " \
-    "Applications.Lodged DESC"
-  end
-
   def self.query_url(query_string:, query_name:, take:, start:, page_size:)
     "urlRequest.aw?" + {
       "actionType" => "run_query_action",
@@ -150,7 +138,13 @@ module HorizonXml
   def self.scrape_url(
     start_url:,
     page_size: 500,
-    query_string: thismonth_query,
+    query_string:
+      "FIND Applications " \
+      "WHERE " \
+      "MONTH(Applications.Lodged)=CURRENT_MONTH AND " \
+      "YEAR(Applications.Lodged)=CURRENT_YEAR " \
+      "ORDER BY " \
+      "Applications.Lodged DESC",
     query_name: "SubmittedThisMonth",
     state: nil
   )
