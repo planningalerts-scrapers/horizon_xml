@@ -117,15 +117,9 @@ module HorizonXml
   def self.scrape_page(page, info_url)
     xml = Nokogiri::XML(page.body)
     xml.xpath("//run_query_action_return/run_query_action_success/dataset/row").each do |app|
-      council_reference = unless app.xpath("AccountNumber").attribute("org_value").text.empty?
-                            app.xpath("AccountNumber").attribute("org_value").text.strip
-                          end
-      address = unless app.xpath("Property").attribute("org_value").text.empty?
-                  app.xpath("Property").attribute("org_value").text.strip
-                end
-      description = unless app.xpath("Description").attribute("org_value").text.empty?
-                      app.xpath("Description").attribute("org_value").text.strip
-                    end
+      council_reference = app.xpath("AccountNumber").attribute("org_value").text.strip
+      address = app.xpath("Property").attribute("org_value").text.strip
+      description = app.xpath("Description").attribute("org_value").text.strip
 
       yield(
         "council_reference" => council_reference,
