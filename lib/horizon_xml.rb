@@ -18,7 +18,16 @@ module HorizonXml
 
   def self.scrape_and_save(authority)
     if authority == :maitland
-      scrape_and_save_maitland
+      scrape_url(
+        start_url: "https://myhorizon.maitland.nsw.gov.au/Horizon/logonOp.aw?e=" \
+                    "FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxER" \
+                    "QgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home",
+        page_size: 100,
+        query_string: thismonth_query2,
+        query_name: "Application_LodgedThisMonth"
+      ) do |record|
+        save(record)
+      end
     else
       if authority == :cowra
         domain = "horizondap_cowra"
@@ -154,25 +163,6 @@ module HorizonXml
 
         yield record
       end
-    end
-  end
-
-  def self.scrape_and_save_maitland
-    page_size = 100
-    base_url = "https://myhorizon.maitland.nsw.gov.au/Horizon/"
-    start_url = "#{base_url}logonOp.aw?e=" \
-                "FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxER" \
-                "QgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home"
-    query_string = thismonth_query2
-    query_name = "Application_LodgedThisMonth"
-
-    scrape_url(
-      start_url: start_url,
-      page_size: page_size,
-      query_string: query_string,
-      query_name: query_name
-    ) do |record|
-      save(record)
     end
   end
 end
