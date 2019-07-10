@@ -36,6 +36,8 @@ module HorizonXml
 
       HorizonXml.scrape_url(
         start_url: "http://myhorizon.solorient.com.au/Horizon/logonGuest.aw?domain=#{domain}",
+        query_string: thismonth_query,
+        query_name: "SubmittedThisMonth",
         page_size: 500,
         state: "NSW"
       ) do |record|
@@ -119,10 +121,7 @@ module HorizonXml
     end
   end
 
-  def self.scrape_url(start_url:, page_size:, state: nil)
-    query_string = thismonth_query
-    query_name = "SubmittedThisMonth"
-
+  def self.scrape_url(start_url:, page_size:, query_string:, query_name:, state: nil)
     agent = Mechanize.new
 
     agent.get(start_url)
