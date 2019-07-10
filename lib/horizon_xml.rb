@@ -115,12 +115,12 @@ module HorizonXml
   end
 
   def self.extract_field(app, name)
-    app.xpath(name).attribute("org_value").text.strip
+    app.at(name)["org_value"].strip
   end
 
   def self.scrape_page(page, info_url)
     xml = Nokogiri::XML(page.body)
-    xml.xpath("//run_query_action_return/run_query_action_success/dataset/row").each do |app|
+    xml.search("row").each do |app|
       yield(
         "council_reference" => extract_field(app, "AccountNumber"),
         "address" => extract_field(app, "Property"),
