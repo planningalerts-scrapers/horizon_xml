@@ -7,7 +7,7 @@
   date_received: '2019-07-01'
 - council_reference: CC/2019/532
   address: 14 High Street  MORPETH  NSW  2321
-  description: Secondary dwelling
+  description: Secondary Dwelling
   info_url: https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html
   date_scraped: '2019-05-15'
   date_received: '2019-07-01'
@@ -227,6 +227,12 @@
   info_url: https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html
   date_scraped: '2019-05-15'
   date_received: '2019-07-09'
+- council_reference: CDC/2019/325
+  address: 22 Harlington Avenue  FARLEY  NSW  2320
+  description: Dwelling house
+  info_url: https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html
+  date_scraped: '2019-05-15'
+  date_received: '2019-07-10'
 - council_reference: DA/2017/1173:1
   address: 2 Watervale Circuit  CHISHOLM  NSW  2322
   description: Section 4.55 (1A) Modification - Reduction in Building Floor Area
@@ -422,7 +428,7 @@
   date_received: '2019-07-09'
 - council_reference: SM2019/15
   address: 45 Cantwell Road  LOCHINVAR  NSW  2321
-  description: Septic Tank
+  description: Sewage Management Facility
   info_url: https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html
   date_scraped: '2019-05-15'
   date_received: '2019-07-03'

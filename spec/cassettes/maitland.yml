@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx/1.14.2
       Date:
-      - Tue, 09 Jul 2019 05:51:16 GMT
+      - Wed, 10 Jul 2019 01:45:44 GMT
       Content-Type:
       - text/html;charset=UTF-8
       Transfer-Encoding:
@@ -43,7 +43,7 @@ http_interactions:
       Expires:
       - Thu, 01 Jan 1970 10:00:00 AEST
       Set-Cookie:
-      - JSESSIONID=121B870C3C32E39C77B50107AC9E7DF9; Path=/Horizon; Secure; HttpOnly
+      - JSESSIONID=3FF6E52100856368C75B31C09BF33A22; Path=/Horizon; Secure; HttpOnly
       Content-Encoding:
       - gzip
     body:
@@ -70,9 +70,11 @@ http_interactions:
       Accept-Language:
       - en-us,en;q=0.5
       Cookie:
-      - JSESSIONID=121B870C3C32E39C77B50107AC9E7DF9
+      - JSESSIONID=3FF6E52100856368C75B31C09BF33A22
       Host:
       - myhorizon.maitland.nsw.gov.au
+      Referer:
+      - https://myhorizon.maitland.nsw.gov.au/Horizon/logonOp.aw?e=FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxERQgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D
       Connection:
       - keep-alive
       Keep-Alive:
@@ -85,7 +87,7 @@ http_interactions:
       Server:
       - nginx/1.14.2
       Date:
-      - Tue, 09 Jul 2019 05:51:47 GMT
+      - Wed, 10 Jul 2019 01:46:16 GMT
       Content-Type:
       - text/xml;charset=UTF-8
       Transfer-Encoding:
@@ -101,8 +103,16 @@ http_interactions:
     body:
       encoding: UTF-8
       string: "<?xml version='1.0' encoding='UTF-8' ?> \r\n<root> \r\n<run_query_action_return>
-        \r\n<run_query_action_success> \r\n<dataset> \r\n<total>71</total> \r\n<row>
-        \r\n<id>558700702</id> \r\n<BAS_REF_VALUE>Application:558700702</BAS_REF_VALUE>
+        \r\n<run_query_action_success> \r\n<dataset> \r\n<total>72</total> \r\n<row>
+        \r\n<id>559397182</id> \r\n<BAS_REF_VALUE>Application:559397182</BAS_REF_VALUE>
+        \r\n<EntryAccount org_value=\"CDC/2019/325\"></EntryAccount> \r\n<Lodged org_value=\"10/07/2019\"></Lodged>
+        \r\n<Details org_value=\"Dwelling house\"></Details> \r\n<ApplicantName org_value=\"BuildCert
+        Consultants \"></ApplicantName> \r\n<PropertyDescription org_value=\"22 Harlington
+        Avenue  FARLEY  NSW  2320\"></PropertyDescription> \r\n<TitleDescription org_value=\"11/1247830\"></TitleDescription>
+        \r\n<Determined org_value=\"10/07/2019\"></Determined> \r\n<DeterminationCode
+        org_value=\"Approved\"></DeterminationCode> \r\n<WorkValue org_value=\"253370.0\"></WorkValue>
+        \r\n<BAS_PROTECTED>Lodged</BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
+        \r\n</row> \r\n<row> \r\n<id>558700702</id> \r\n<BAS_REF_VALUE>Application:558700702</BAS_REF_VALUE>
         \r\n<EntryAccount org_value=\"DA/2019/583\"></EntryAccount> \r\n<Lodged org_value=\"09/07/2019\"></Lodged>
         \r\n<Details org_value=\"Dual occupancy (attached), Dwelling house, Subdivision
         - Torrens Title, Subdivision - Strata Title, Demolition\"></Details> \r\n<ApplicantName
@@ -517,12 +527,12 @@ http_interactions:
         \r\n<WorkValue org_value=\"542960.0\"></WorkValue> \r\n<BAS_PROTECTED>Lodged</BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
         \r\n</row> \r\n<row> \r\n<id>557683923</id> \r\n<BAS_REF_VALUE>Application:557683923</BAS_REF_VALUE>
         \r\n<EntryAccount org_value=\"SM2019/15\"></EntryAccount> \r\n<Lodged org_value=\"03/07/2019\"></Lodged>
-        \r\n<Details org_value=\"Septic Tank\"></Details> \r\n<ApplicantName org_value=\"Mark
-        Eddy Building Pty Ltd\"></ApplicantName> \r\n<PropertyDescription org_value=\"45
-        Cantwell Road  LOCHINVAR  NSW  2321\"></PropertyDescription> \r\n<TitleDescription
-        org_value=\"66/837392\"></TitleDescription> \r\n<Determined org_value=\"\"></Determined>
-        \r\n<DeterminationCode org_value=\"\"></DeterminationCode> \r\n<WorkValue
-        org_value=\"0.0\"></WorkValue> \r\n<BAS_PROTECTED>Lodged</BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
+        \r\n<Details org_value=\"Sewage Management Facility \"></Details> \r\n<ApplicantName
+        org_value=\"Mark Eddy Building Pty Ltd\"></ApplicantName> \r\n<PropertyDescription
+        org_value=\"45 Cantwell Road  LOCHINVAR  NSW  2321\"></PropertyDescription>
+        \r\n<TitleDescription org_value=\"66/837392\"></TitleDescription> \r\n<Determined
+        org_value=\"\"></Determined> \r\n<DeterminationCode org_value=\"\"></DeterminationCode>
+        \r\n<WorkValue org_value=\"0.0\"></WorkValue> \r\n<BAS_PROTECTED>Lodged</BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
         \r\n</row> \r\n<row> \r\n<id>557413637</id> \r\n<BAS_REF_VALUE>Application:557413637</BAS_REF_VALUE>
         \r\n<EntryAccount org_value=\"DA/2019/565\"></EntryAccount> \r\n<Lodged org_value=\"02/07/2019\"></Lodged>
         \r\n<Details org_value=\"Dwelling Alterations/Additions - Shed and Deck \"></Details>
@@ -654,7 +664,7 @@ http_interactions:
         \r\n<WorkValue org_value=\"397435.0\"></WorkValue> \r\n<BAS_PROTECTED>Lodged</BAS_PROTECTED>\r\n<BAS_OPER_APPLICABILITY></BAS_OPER_APPLICABILITY>
         \r\n</row> \r\n<row> \r\n<id>557099282</id> \r\n<BAS_REF_VALUE>Application:557099282</BAS_REF_VALUE>
         \r\n<EntryAccount org_value=\"CC/2019/532\"></EntryAccount> \r\n<Lodged org_value=\"01/07/2019\"></Lodged>
-        \r\n<Details org_value=\"Secondary dwelling\"></Details> \r\n<ApplicantName
+        \r\n<Details org_value=\"Secondary Dwelling\"></Details> \r\n<ApplicantName
         org_value=\"Craig Crouch\"></ApplicantName> \r\n<PropertyDescription org_value=\"14
         High Street  MORPETH  NSW  2321\"></PropertyDescription> \r\n<TitleDescription
         org_value=\"1/28032\"></TitleDescription> \r\n<Determined org_value=\"\"></Determined>
