@@ -28,30 +28,47 @@ module HorizonXml
       ) do |record|
         save(record)
       end
-    else
-      if authority == :cowra
-        domain = "horizondap_cowra"
-      elsif authority == :liverpool_plains
-        domain = "horizondap_lpsc"
-      elsif authority == :uralla
-        domain = "horizondap_uralla"
-      elsif authority == :walcha
-        domain = "horizondap_walcha"
-      elsif authority == :weddin
-        domain = "horizondap"
-      else
-        raise "Unexpected authority: #{authority}"
-      end
-
+    elsif authority == :cowra
       HorizonXml.scrape_url(
-        start_url: "http://myhorizon.solorient.com.au/Horizon/logonGuest.aw?domain=#{domain}",
-        query_string: thismonth_query,
-        query_name: "SubmittedThisMonth",
-        page_size: 500,
+        start_url:
+          "http://myhorizon.solorient.com.au/Horizon/logonGuest.aw?domain=horizondap_cowra",
         state: "NSW"
       ) do |record|
         save(record)
       end
+    elsif authority == :liverpool_plains
+      HorizonXml.scrape_url(
+        start_url:
+          "http://myhorizon.solorient.com.au/Horizon/logonGuest.aw?domain=horizondap_lpsc",
+        state: "NSW"
+      ) do |record|
+        save(record)
+      end
+    elsif authority == :uralla
+      HorizonXml.scrape_url(
+        start_url:
+          "http://myhorizon.solorient.com.au/Horizon/logonGuest.aw?domain=horizondap_uralla",
+        state: "NSW"
+      ) do |record|
+        save(record)
+      end
+    elsif authority == :walcha
+      HorizonXml.scrape_url(
+        start_url:
+          "http://myhorizon.solorient.com.au/Horizon/logonGuest.aw?domain=horizondap_walcha",
+        state: "NSW"
+      ) do |record|
+        save(record)
+      end
+    elsif authority == :weddin
+      HorizonXml.scrape_url(
+        start_url: "http://myhorizon.solorient.com.au/Horizon/logonGuest.aw?domain=horizondap",
+        state: "NSW"
+      ) do |record|
+        save(record)
+      end
+    else
+      raise "Unexpected authority: #{authority}"
     end
   end
 
@@ -130,7 +147,13 @@ module HorizonXml
     end
   end
 
-  def self.scrape_url(start_url:, page_size:, query_string:, query_name:, state: nil)
+  def self.scrape_url(
+    start_url:,
+    page_size: 500,
+    query_string: thismonth_query,
+    query_name: "SubmittedThisMonth",
+    state: nil
+  )
     agent = Mechanize.new
 
     agent.get(start_url)
