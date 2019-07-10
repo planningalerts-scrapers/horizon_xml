@@ -52,15 +52,25 @@ module HorizonXml
   }.freeze
 
   def self.scrape_and_save(authority)
-    raise "Unexpected authority: #{authority}" unless AUTHORITIES.key?(authority)
-
-    scrape_url(AUTHORITIES[authority]) do |record|
+    scrape(authority) do |record|
       save(record)
     end
   end
 
-  def self.save(record)
+  def self.scrape(authority)
+    raise "Unexpected authority: #{authority}" unless AUTHORITIES.key?(authority)
+
+    scrape_url(AUTHORITIES[authority]) do |record|
+      yield record
+    end
+  end
+
+  def self.log(record)
     puts "Saving record " + record["council_reference"] + ", " + record["address"]
+  end
+
+  def self.save(record)
+    log(record)
     ScraperWiki.save_sqlite(["council_reference"], record)
   end
 
