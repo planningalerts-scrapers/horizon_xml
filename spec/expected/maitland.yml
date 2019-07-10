@@ -1,7 +1,7 @@
 ---
 - council_reference: CC/2019/530
   address: 3 Angelica  Road  CHISHOLM  NSW  2322
-  description: 'Dwelling - Single Storey '
+  description: Dwelling - Single Storey
   info_url: https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html
   date_scraped: '2019-05-15'
   date_received: '2019-07-01'
@@ -31,13 +31,13 @@
   date_received: '2019-07-02'
 - council_reference: CC/2019/536
   address: 13 Lucy Place  RAWORTH  NSW  2321
-  description: 'Dwelling Alterations/Additions - Shed and Deck '
+  description: Dwelling Alterations/Additions - Shed and Deck
   info_url: https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html
   date_scraped: '2019-05-15'
   date_received: '2019-07-02'
 - council_reference: CC/2019/537
   address: 47 Grand Parade  RUTHERFORD  NSW  2320
-  description: 'Dwelling Single Storey '
+  description: Dwelling Single Storey
   info_url: https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html
   date_scraped: '2019-05-15'
   date_received: '2019-07-02'
@@ -55,7 +55,7 @@
   date_received: '2019-07-03'
 - council_reference: CC/2019/540
   address: 24 Lancaster Street  THORNTON  NSW  2322
-  description: 'Dwelling - Single Storey '
+  description: Dwelling - Single Storey
   info_url: https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html
   date_scraped: '2019-05-15'
   date_received: '2019-07-03'
@@ -115,7 +115,7 @@
   date_received: '2019-07-08'
 - council_reference: CC/2019/550
   address: 79 Tarragon Way  CHISHOLM  NSW  2322
-  description: 'Dwelling - Two Storey '
+  description: Dwelling - Two Storey
   info_url: https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html
   date_scraped: '2019-05-15'
   date_received: '2019-07-08'
@@ -157,7 +157,7 @@
   date_received: '2019-07-09'
 - council_reference: CDC/2016/2221:1
   address: 76 Dragonfly Drive  CHISHOLM  NSW  2322
-  description: 'Single Storey Dwelling, Remove Retaining Wall '
+  description: Single Storey Dwelling, Remove Retaining Wall
   info_url: https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html
   date_scraped: '2019-05-15'
   date_received: '2019-07-09'
@@ -247,7 +247,7 @@
   date_received: '2019-07-08'
 - council_reference: DA/2019/558
   address: 3 Angelica  Road  CHISHOLM  NSW  2322
-  description: 'Dwelling - Single Storey '
+  description: Dwelling - Single Storey
   info_url: https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html
   date_scraped: '2019-05-15'
   date_received: '2019-07-01'
@@ -289,19 +289,19 @@
   date_received: '2019-07-01'
 - council_reference: DA/2019/565
   address: 13 Lucy Place  RAWORTH  NSW  2321
-  description: 'Dwelling Alterations/Additions - Shed and Deck '
+  description: Dwelling Alterations/Additions - Shed and Deck
   info_url: https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html
   date_scraped: '2019-05-15'
   date_received: '2019-07-02'
 - council_reference: DA/2019/566
   address: 3 Norfolk Street  ASHTONFIELD  NSW  2323
-  description: 'Alterations and Additions to Existing Public School (Ashtonfield) '
+  description: Alterations and Additions to Existing Public School (Ashtonfield)
   info_url: https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html
   date_scraped: '2019-05-15'
   date_received: '2019-07-02'
 - council_reference: DA/2019/567
   address: 24 Lancaster Street  THORNTON  NSW  2322
-  description: 'Dwelling - Single Storey '
+  description: Dwelling - Single Storey
   info_url: https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html
   date_scraped: '2019-05-15'
   date_received: '2019-07-03'

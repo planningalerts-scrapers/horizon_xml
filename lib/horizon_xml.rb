@@ -115,16 +115,28 @@ module HorizonXml
   end
 
   def self.extract_field(app, name)
-    app.at(name)["org_value"].strip
+    node = app.at(name)
+    node["org_value"].strip if node
   end
 
   def self.scrape_page(page, info_url)
     xml = Nokogiri::XML(page.body)
+    # We know about two different forms of this XML
+    if xml.at("AccountNumber")
+      council_reference_tag = "AccountNumber"
+      address_tag = "Property"
+      description_tag = "Description"
+    else
+      council_reference_tag = "EntryAccount"
+      address_tag = "PropertyDescription"
+      description_tag = "Details"
+    end
+
     xml.search("row").each do |app|
       yield(
-        "council_reference" => extract_field(app, "AccountNumber"),
-        "address" => extract_field(app, "Property"),
-        "description" => extract_field(app, "Description"),
+        "council_reference" => extract_field(app, council_reference_tag),
+        "address" => extract_field(app, address_tag).split(", ")[0],
+        "description" => extract_field(app, description_tag),
         "info_url" => info_url,
         "date_scraped" => Date.today.to_s,
         # TODO: Parse date based on knowledge of form
@@ -166,17 +178,7 @@ module HorizonXml
     agent.get(start_url)
     page = agent.get(thismonth_url2(base_url))
 
-    records = page.search("//row")
-
-    records.each do |r|
-      record = {}
-      record["council_reference"] = r.at("EntryAccount")["org_value"]
-      record["address"]           = r.at("PropertyDescription")["org_value"].split(",")[0]
-      record["description"]       = r.at("Details")["org_value"]
-      record["info_url"]          = info_url
-      record["date_scraped"]      = Date.today.to_s
-      record["date_received"]     = Date.strptime(r.at("Lodged")["org_value"], "%d/%m/%Y").to_s
-
+    scrape_page(page, info_url) do |record|
       save(record)
     end
   end
