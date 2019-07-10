@@ -35,9 +35,10 @@ module HorizonXml
       end
 
       HorizonXml.scrape_url(
-        "http://myhorizon.solorient.com.au/Horizon/",
-        domain,
-        "NSW"
+        base_url: "http://myhorizon.solorient.com.au/Horizon/",
+        domain: domain,
+        page_size: 500,
+        state: "NSW"
       ) do |record|
         save(record)
       end
@@ -139,8 +140,7 @@ module HorizonXml
     end
   end
 
-  def self.scrape_url(base_url, domain, state = nil)
-    page_size = 500
+  def self.scrape_url(base_url:, domain:, page_size:, state: nil)
     start_url = "#{base_url}logonGuest.aw?domain=#{domain}"
 
     agent = Mechanize.new
