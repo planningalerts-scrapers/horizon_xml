@@ -183,8 +183,7 @@ module HorizonXml
       record["date_scraped"]      = Date.today.to_s
       record["date_received"]     = Date.strptime(r.at("Lodged")["org_value"], "%d/%m/%Y").to_s
 
-      puts "Saving record " + record["council_reference"] + ", " + record["address"]
-      ScraperWiki.save_sqlite(["council_reference"], record)
+      save(record)
     end
   end
 end
