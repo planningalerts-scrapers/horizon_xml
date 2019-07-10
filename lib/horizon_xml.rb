@@ -93,13 +93,13 @@ module HorizonXml
     )
   end
 
-  def self.thismonth_url2(base_url)
+  def self.thismonth_url2(base_url, start, page_size)
     base_url + query_url(
       query_string: thismonth_query2,
       query_name: "Application_LodgedThisMonth",
       take: 100,
-      start: 0,
-      page_size: 100
+      start: start,
+      page_size: page_size
     )
   end
 
@@ -162,6 +162,7 @@ module HorizonXml
   end
 
   def self.scrape_and_save_maitland
+    page_size = 100
     base_url = "https://myhorizon.maitland.nsw.gov.au/Horizon/"
     start_url = "#{base_url}logonOp.aw?e=" \
                 "FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxER" \
@@ -170,7 +171,7 @@ module HorizonXml
 
     agent = Mechanize.new
     agent.get(start_url)
-    page = agent.get(thismonth_url2(base_url))
+    page = agent.get(thismonth_url2(base_url, 0, page_size))
 
     scrape_page(page, info_url) do |record|
       save(record)
