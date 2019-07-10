@@ -147,11 +147,11 @@ module HorizonXml
 
   def self.scrape_url(base_url, domain, state = nil)
     page_size = 500
-    cookie_url = "#{base_url}logonGuest.aw?domain=#{domain}"
+    start_url = "#{base_url}logonGuest.aw?domain=#{domain}"
 
     agent = Mechanize.new
 
-    agent.get(cookie_url)
+    agent.get(start_url)
     page = agent.get(HorizonXml.url(base_url, 0, page_size))
 
     pages = extract_total(page) / page_size
@@ -159,7 +159,7 @@ module HorizonXml
     (0..pages).each do |i|
       page = agent.get(HorizonXml.url(base_url, i * page_size, page_size)) if i.positive?
 
-      scrape_page(page, cookie_url) do |record|
+      scrape_page(page, start_url) do |record|
         record["address"] += " #{state}" if record["address"] && state
 
         yield record
