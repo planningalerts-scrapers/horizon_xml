@@ -20,8 +20,6 @@ module HorizonXml
     if authority == :maitland
       scrape_and_save_maitland
     else
-      base_url = "http://myhorizon.solorient.com.au/Horizon/"
-
       if authority == :cowra
         domain = "horizondap_cowra"
       elsif authority == :liverpool_plains
@@ -36,7 +34,11 @@ module HorizonXml
         raise "Unexpected authority: #{authority}"
       end
 
-      HorizonXml.scrape_url(base_url, domain) do |record|
+      HorizonXml.scrape_url(
+        "http://myhorizon.solorient.com.au/Horizon/",
+        domain,
+        "NSW"
+      ) do |record|
         save(record)
       end
     end
@@ -112,17 +114,15 @@ module HorizonXml
     xml.xpath("//run_query_action_return/run_query_action_success/dataset/total").text.to_i
   end
 
-  def self.scrape_page(page, cookie_url)
+  def self.scrape_page(page, info_url)
     xml = Nokogiri::XML(page.body)
     xml.xpath("//run_query_action_return/run_query_action_success/dataset/row").each do |app|
       council_reference = unless app.xpath("AccountNumber").attribute("org_value").text.empty?
                             app.xpath("AccountNumber").attribute("org_value").text.strip
                           end
-      # TODO: Make state configurable
       address = unless app.xpath("Property").attribute("org_value").text.empty?
-                  (app.xpath("Property").attribute("org_value").text + " NSW").strip
+                  app.xpath("Property").attribute("org_value").text.strip
                 end
-
       description = unless app.xpath("Description").attribute("org_value").text.empty?
                       app.xpath("Description").attribute("org_value").text.strip
                     end
@@ -131,7 +131,7 @@ module HorizonXml
         "council_reference" => council_reference,
         "address" => address,
         "description" => description,
-        "info_url" => cookie_url,
+        "info_url" => info_url,
         "date_scraped" => Date.today.to_s,
         "date_received" => DateTime.parse(app.xpath("Lodged")
                            .attribute("org_value").text).to_date.to_s
@@ -139,7 +139,7 @@ module HorizonXml
     end
   end
 
-  def self.scrape_url(base_url, domain)
+  def self.scrape_url(base_url, domain, state = nil)
     page_size = 500
     cookie_url = "#{base_url}logonGuest.aw?domain=#{domain}"
 
@@ -154,6 +154,8 @@ module HorizonXml
       page = agent.get(HorizonXml.url(base_url, i * page_size, page_size)) if i.positive?
 
       scrape_page(page, cookie_url) do |record|
+        record["address"] += " #{state}" if record["address"] && state
+
         yield record
       end
     end
@@ -164,10 +166,12 @@ module HorizonXml
     start_url = "#{base_url}logonOp.aw?e=" \
                 "FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxER" \
                 "QgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home"
+    info_url = "https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html"
 
     agent = Mechanize.new
     agent.get(start_url)
     page = agent.get(thismonth_url2(base_url))
+
     records = page.search("//row")
 
     records.each do |r|
@@ -175,7 +179,7 @@ module HorizonXml
       record["council_reference"] = r.at("EntryAccount")["org_value"]
       record["address"]           = r.at("PropertyDescription")["org_value"].split(",")[0]
       record["description"]       = r.at("Details")["org_value"]
-      record["info_url"]          = "https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html"
+      record["info_url"]          = info_url
       record["date_scraped"]      = Date.today.to_s
       record["date_received"]     = Date.strptime(r.at("Lodged")["org_value"], "%d/%m/%Y").to_s
 
