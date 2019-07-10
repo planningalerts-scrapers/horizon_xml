@@ -163,23 +163,15 @@ module HorizonXml
     start_url = "#{base_url}logonOp.aw?e=" \
                 "FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxER" \
                 "QgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home"
-    info_url = "https://myhorizon.maitland.nsw.gov.au/Horizon/embed.html"
     query_string = thismonth_query2
     query_name = "Application_LodgedThisMonth"
 
-    agent = Mechanize.new
-    agent.get(start_url)
-    page = agent.get(
-      query_url(
-        query_string: query_string,
-        query_name: query_name,
-        take: 50,
-        start: 0,
-        page_size: page_size
-      )
-    )
-
-    scrape_page(page, info_url) do |record|
+    scrape_url(
+      start_url: start_url,
+      page_size: page_size,
+      query_string: query_string,
+      query_name: query_name
+    ) do |record|
       save(record)
     end
   end
