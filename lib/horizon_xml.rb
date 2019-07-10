@@ -114,22 +114,21 @@ module HorizonXml
     xml.xpath("//run_query_action_return/run_query_action_success/dataset/total").text.to_i
   end
 
+  def self.extract_field(app, name)
+    app.xpath(name).attribute("org_value").text.strip
+  end
+
   def self.scrape_page(page, info_url)
     xml = Nokogiri::XML(page.body)
     xml.xpath("//run_query_action_return/run_query_action_success/dataset/row").each do |app|
-      council_reference = app.xpath("AccountNumber").attribute("org_value").text.strip
-      address = app.xpath("Property").attribute("org_value").text.strip
-      description = app.xpath("Description").attribute("org_value").text.strip
-      date_received = app.xpath("Lodged").attribute("org_value").text
-
       yield(
-        "council_reference" => council_reference,
-        "address" => address,
-        "description" => description,
+        "council_reference" => extract_field(app, "AccountNumber"),
+        "address" => extract_field(app, "Property"),
+        "description" => extract_field(app, "Description"),
         "info_url" => info_url,
         "date_scraped" => Date.today.to_s,
         # TODO: Parse date based on knowledge of form
-        "date_received" => DateTime.parse(date_received).to_date.to_s
+        "date_received" => DateTime.parse(extract_field(app, "Lodged")).to_date.to_s
       )
     end
   end
