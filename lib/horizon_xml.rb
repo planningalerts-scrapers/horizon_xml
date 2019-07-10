@@ -7,78 +7,55 @@ require "active_support/core_ext/hash"
 # Scrape horizon (solorient) site
 module HorizonXml
   AUTHORITIES = {
-    cowra: {},
-    # Can't yet test liverpool_plains because it doesn't return any data for this month
-    # liverpool_plains: {}
-    uralla: {},
-    walcha: {},
-    weddin: {},
-    maitland: {}
+    cowra: {
+      start_url:
+        "http://myhorizon.solorient.com.au/Horizon/logonGuest.aw?domain=horizondap_cowra",
+      state: "NSW"
+    },
+    liverpool_plains: {
+      start_url:
+        "http://myhorizon.solorient.com.au/Horizon/logonGuest.aw?domain=horizondap_lpsc",
+      state: "NSW"
+    },
+    uralla: {
+      start_url:
+        "http://myhorizon.solorient.com.au/Horizon/logonGuest.aw?domain=horizondap_uralla",
+      state: "NSW"
+    },
+    walcha: {
+      start_url:
+        "http://myhorizon.solorient.com.au/Horizon/logonGuest.aw?domain=horizondap_walcha",
+      state: "NSW"
+    },
+    weddin: {
+      start_url: "http://myhorizon.solorient.com.au/Horizon/logonGuest.aw?domain=horizondap",
+      state: "NSW"
+    },
+    maitland: {
+      start_url: "https://myhorizon.maitland.nsw.gov.au/Horizon/logonOp.aw?e=" \
+                  "FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxER" \
+                  "QgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home",
+      page_size: 100,
+      query_string:
+        "FIND Applications " \
+        "WHERE " \
+        "Applications.ApplicationTypeID.IsAvailableOnline='Yes' AND " \
+        "Applications.CanDisclose='Yes' AND " \
+        "NOT(Applications.StatusName IN 'Pending', 'Cancelled') AND " \
+        "MONTH(Applications.Lodged)=CURRENT_MONTH AND " \
+        "YEAR(Applications.Lodged)=CURRENT_YEAR AND " \
+        "Application.ApplicationTypeID.Classification='Application' " \
+        "ORDER BY " \
+        "Applications.Lodged DESC",
+      query_name: "Application_LodgedThisMonth"
+    }
   }.freeze
 
   def self.scrape_and_save(authority)
-    if authority == :maitland
-      scrape_url(
-        start_url: "https://myhorizon.maitland.nsw.gov.au/Horizon/logonOp.aw?e=" \
-                    "FxkUAB1eSSgbAR0MXx0aEBcRFgEzEQE6F10WSz4UEUMAZgQSBwVHHAQdXBNFETMAQkZFBEZAXxER" \
-                    "QgcwERAAH0YWSzgRBFwdIxUHHRleNAMcEgA%3D#/home",
-        page_size: 100,
-        query_string:
-          "FIND Applications " \
-          "WHERE " \
-          "Applications.ApplicationTypeID.IsAvailableOnline='Yes' AND " \
-          "Applications.CanDisclose='Yes' AND " \
-          "NOT(Applications.StatusName IN 'Pending', 'Cancelled') AND " \
-          "MONTH(Applications.Lodged)=CURRENT_MONTH AND " \
-          "YEAR(Applications.Lodged)=CURRENT_YEAR AND " \
-          "Application.ApplicationTypeID.Classification='Application' " \
-          "ORDER BY " \
-          "Applications.Lodged DESC",
-        query_name: "Application_LodgedThisMonth"
-      ) do |record|
-        save(record)
-      end
-    elsif authority == :cowra
-      HorizonXml.scrape_url(
-        start_url:
-          "http://myhorizon.solorient.com.au/Horizon/logonGuest.aw?domain=horizondap_cowra",
-        state: "NSW"
-      ) do |record|
-        save(record)
-      end
-    elsif authority == :liverpool_plains
-      HorizonXml.scrape_url(
-        start_url:
-          "http://myhorizon.solorient.com.au/Horizon/logonGuest.aw?domain=horizondap_lpsc",
-        state: "NSW"
-      ) do |record|
-        save(record)
-      end
-    elsif authority == :uralla
-      HorizonXml.scrape_url(
-        start_url:
-          "http://myhorizon.solorient.com.au/Horizon/logonGuest.aw?domain=horizondap_uralla",
-        state: "NSW"
-      ) do |record|
-        save(record)
-      end
-    elsif authority == :walcha
-      HorizonXml.scrape_url(
-        start_url:
-          "http://myhorizon.solorient.com.au/Horizon/logonGuest.aw?domain=horizondap_walcha",
-        state: "NSW"
-      ) do |record|
-        save(record)
-      end
-    elsif authority == :weddin
-      HorizonXml.scrape_url(
-        start_url: "http://myhorizon.solorient.com.au/Horizon/logonGuest.aw?domain=horizondap",
-        state: "NSW"
-      ) do |record|
-        save(record)
-      end
-    else
-      raise "Unexpected authority: #{authority}"
+    raise "Unexpected authority: #{authority}" unless AUTHORITIES.key?(authority)
+
+    scrape_url(AUTHORITIES[authority]) do |record|
+      save(record)
     end
   end
 
