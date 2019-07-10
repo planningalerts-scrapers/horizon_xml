@@ -83,26 +83,6 @@ module HorizonXml
     }.to_query
   end
 
-  def self.thismonth_url(start, page_size)
-    query_url(
-      query_string: thismonth_query,
-      query_name: "SubmittedThisMonth",
-      take: 50,
-      start: start,
-      page_size: page_size
-    )
-  end
-
-  def self.thismonth_url2(start, page_size)
-    query_url(
-      query_string: thismonth_query2,
-      query_name: "Application_LodgedThisMonth",
-      take: 50,
-      start: start,
-      page_size: page_size
-    )
-  end
-
   def self.extract_total(page)
     xml = Nokogiri::XML(page.body)
     xml.xpath("//run_query_action_return/run_query_action_success/dataset/total").text.to_i
@@ -143,13 +123,30 @@ module HorizonXml
     agent = Mechanize.new
 
     agent.get(start_url)
-    page = agent.get(thismonth_url(0, page_size))
+    page = agent.get(
+      query_url(
+        query_string: thismonth_query,
+        query_name: "SubmittedThisMonth",
+        take: 50,
+        start: 0,
+        page_size: page_size
+      )
+    )
 
     pages = extract_total(page) / page_size
 
     (0..pages).each do |i|
-      page = agent.get(thismonth_url(i * page_size, page_size)) if i.positive?
-
+      if i.positive?
+        page = agent.get(
+          query_url(
+            query_string: thismonth_query,
+            query_name: "SubmittedThisMonth",
+            take: 50,
+            start: i * page_size,
+            page_size: page_size
+          )
+        )
+      end
       scrape_page(page, start_url) do |record|
         record["address"] += " #{state}" if record["address"] && state
 
@@ -168,7 +165,15 @@ module HorizonXml
 
     agent = Mechanize.new
     agent.get(start_url)
-    page = agent.get(thismonth_url2(0, page_size))
+    page = agent.get(
+      query_url(
+        query_string: thismonth_query2,
+        query_name: "Application_LodgedThisMonth",
+        take: 50,
+        start: 0,
+        page_size: page_size
+      )
+    )
 
     scrape_page(page, info_url) do |record|
       save(record)
