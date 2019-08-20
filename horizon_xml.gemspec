@@ -19,10 +19,12 @@ Gem::Specification.new do |s|
   s.add_dependency "scraperwiki"
 
   s.add_development_dependency "bundler", "~> 1.16"
+  s.add_development_dependency "mini_magick"
   s.add_development_dependency "rake", "~> 10.0"
   s.add_development_dependency "rspec", "~> 3.0"
   s.add_development_dependency "rubocop"
   s.add_development_dependency "timecop"
   s.add_development_dependency "vcr"
+  s.add_development_dependency "watir"
   s.add_development_dependency "webmock"
 end
