@@ -1,5 +1,3 @@
-## What an Horizon/SolOrient website looks like
+# We've moved
 
-![Sign up](https://github.com/planningalerts-scrapers/horizon_xml/raw/master/screenshots/all.jpg)
-
-(To update this screenshot run `bundle exec rake screenshots`)
+The gem that used to be here has been merged into https://github.com/planningalerts-scrapers/multiple_horizon
